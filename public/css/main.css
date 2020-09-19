@@ -1,0 +1,224 @@
+
+body,html {
+  margin: 0;
+  padding: 0;
+}
+* {
+  box-sizing: border-box;
+}
+.login{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.login__bannerSection{
+    width: 45%;
+    height: 100vh;
+}
+.login__bannerImage{
+    background-image: url("/Images/login-vertical-banner.jpg");
+    background-position: center;
+    height: 100%;
+}
+.login__bannerSocialNetworks{
+    position: absolute;
+    margin-top: 39%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 45%;
+}
+
+ul {
+    transform: rotate(-25deg) skew(25deg);
+    transform-style: preserve-3d;
+    margin-right: 5%;  
+ }
+ ul li {
+   position: relative;
+   list-style: none;
+   width: 50px;
+   height: 50px;
+   margin-right: 20px
+ }
+ ul li:before{
+   content: '';
+   position: absolute;
+   bottom: -10px;
+   left: -5px;
+   width: 100%;
+   height: 10px;
+   background: #2a2a2a;
+   transform: skewX(-41deg);
+ }
+ ul li:after{
+   content: '';
+   position: absolute;
+   top:5px;
+   left: -9px;
+   width: 9px;
+   height: 100%;
+   background: #2a2a2a;
+   transform: skewY(-49deg);
+ }
+ ul li span{
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   display: flex !important;
+   background: #2a2a2a;
+   justify-content: center;
+   align-items: center;
+   color: #fff;
+   font-size: 30px !important;
+   transition: 1.5s ease-out;
+ }
+ ul li:hover span {
+   z-index: 1000;
+   transition: .3s;
+   color: #fff;
+   box-shadow: -1px 1px 1px rgba(0, 0, 0, .5);
+ }
+ ul li:hover span:nth-child(5){
+   transform: translate(40px, -40px);
+   opacity: 1;
+ }
+ ul li:hover span:nth-child(4){
+   transform: translate(30px, -30px);
+   opacity: .8;
+ }
+ ul li:hover span:nth-child(3){
+   transform: translate(20px, -20px);
+   opacity: .6;
+ }
+ ul li:hover span:nth-child(2){
+   transform: translate(10px, -10px);
+   opacity: .4;
+ }ul li:hover span:nth-child(1){
+   transform: translate(0px, 0px);
+   opacity: .2;
+ }
+ ul li:nth-child(1):hover span{
+   background: #0729e9 !important;
+ }
+ ul li:nth-child(2):hover span{
+   background: #5d91ff !important;
+ }
+ ul li:nth-child(3):hover span{
+   background: #EA6E96 !important;
+ }
+ ul li:nth-child(4):hover span{
+   background: #FCEB00 !important;
+ }
+
+.login__loginSection{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45%;
+    margin: auto;	
+}
+.login__loginSection *:focus{    	
+    outline:none;
+}
+.login__loginLogo{
+    height: 150px;
+    min-width: 320px;
+    margin-bottom: 20px;
+    transition: all 500ms;
+}
+.login__loginLogo:hover{
+    transform: scale(1.1);
+}
+.login__inputData{
+    position: relative;
+    margin-bottom: 20px;
+    min-width: 350px;
+}
+.login__inputData label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 18px;
+    font-weight: 400;
+    pointer-events: none;
+	transition: all 0.5s ease-in-out;
+}
+.login__inputData input{
+    border: 0;
+    width: 100%;
+    border-bottom:1px solid #555;
+    padding: 8px 0 5px 5px;
+    font-size: 18px;    
+}
+.login__inputData input:focus{
+    border-bottom: 2px solid rgb(57, 151, 180);
+}
+
+.login__inputData input:focus ~ label,
+.login__inputData input:valid ~ label{
+    top:-12px;
+	  font-size: 14px;
+}
+.noLogin{
+  color: black;
+  background-color: rgb(244, 255, 97);
+  padding: 4px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: -20px;
+  margin-bottom: 10px;
+}
+.error{
+  color: white;
+  background-color: rgb(255, 97, 97);
+  padding: 4px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+}
+.login__loginSection button{
+    min-width: 350px;
+    height: 35px;
+    margin-bottom: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    color: #FFF;
+    background-color: rgb(48, 127, 151);
+}
+.login__loginSection button:hover {
+    background-image: linear-gradient(
+      158deg,
+      transparent 10%,
+      rgb(34, 89, 105) 10% 20%,
+      transparent 20% 30%,
+      rgb(34, 89, 105) 30% 40%,
+      transparent 40% 50%,
+      rgb(34, 89, 105) 50% 60%,
+      transparent 60% 70%,
+      rgb(34, 89, 105) 70% 80%,
+      transparent 80% 90%,
+      rgb(34, 89, 105) 90% 100%
+    );
+    animation: background 3s linear infinite;
+  }  
+  @keyframes background {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 400px 0;
+    }
+  }
+  @media all and (max-width: 700px) {    
+    .login__bannerSection{
+        display: none;
+    }
+  }
