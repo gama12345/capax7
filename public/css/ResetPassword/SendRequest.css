@@ -58,4 +58,23 @@ form{
 	top:1px;
 }
 
-        
+.error, .failed{
+    color: white;
+    background-color: rgb(255, 97, 97);
+    width: 40%;
+    padding: 4px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .success{
+    color: white;
+    background-color: rgb(16, 155, 51);
+    width: 40%;
+    padding: 4px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }

@@ -59,33 +59,46 @@ class UserController extends Controller
         return view('resetpassword.sendrequest');
     }
     public function validateRequestPassword(Request $request){
-        $user = DB::table('clients')->where('email', $request->email)->first();
-
-        //Creamos el token para reestablecer la contraseña
-        DB::table('password_resets')->insert([
-            'email' => $request->email,
-            'token' => Str::random(20),
-            'created_at' => Carbon::now()
+        $validator = Validator::make($request->all(), [
+            'email' => 'required','email',
+        ],[
+            'email.required' => 'Ingrese su email antes de continuar',
+            'email.email' => 'Formato de email no reconocido',
         ]);
-
-        //Obtenemos el token registrado anteriormente
-        $tokenData = DB::table('password_resets')
-            ->where('email', $request->email)->first();
-
-        if ($this->sendEmailResetPassword($request->email, $tokenData->token)) {
-            return 'exito';
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors());
         } else {
-            return 'error';
+            $user = DB::table('clients')->where('email', $request->email)->first();
+            if($user){
+                //Creamos el token para reestablecer la contraseña
+                DB::table('password_resets')->insert([
+                    'email' => $request->email,
+                    'token' => Str::random(20),
+                    'created_at' => Carbon::now()
+                ]);
+
+                //Obtenemos el token registrado anteriormente
+                $tokenData = DB::table('password_resets')
+                    ->where('email', $request->email)->first();
+
+                if ($this->sendEmailResetPassword($request->email, $tokenData->token)) {
+                    return back()->with('success', 'Se ha enviado un enlace a su correo para reestalecer su contraseña');
+                } else {
+                    return back()->with('failed', 'Ha ocurrido un error en el servidor, pruebe nuevamente o contactenos directamente');
+                }
+            }else{
+                return back()->withErrors('No se encontró ninguna cuenta registrada con este email');
+            }
         }
     }
     private function sendEmailResetPassword($email, $token){
         //Obtenemos info del usuario
         $user = DB::table('clients')->where('email', $email)->select('razon_social', 'email')->first();
         //Generamos el enlace de reestablecimiento
-        $link = config('app.url') . '/reestablecer/contraseña/' . $token . '?email=' . urlencode($user->email);
+        $link = config('app.url') . 'reestablecercontraseña/' . $token . '?email=' . urlencode($user->email);
 
             try {
-                \Mail::to($email)->send(new \App\Mail\SolicitudReestablecerPassword($link));
+                \Mail::to($email)->send(new \App\Mail\RequestResetPassword($link));
                 return true;
             } catch (\Exception $e) {
                 return false;
