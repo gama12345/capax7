@@ -22,7 +22,7 @@
     @if(Session::get('success'))
         <script>
             alert('Se ha reestablecido su contraseña correctamente');
-            location.href = @json(route('inicio'));
+            location.href = @json(route('main'));
         </script>
     @else
         <div class="container">
@@ -31,16 +31,16 @@
                     <div class="card">
                         <div class="card-header">{{ __('Reestablecer Contraseña') }}</div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('actualizar.password') }}">
+                            <form method="POST" action="{{ route('updatePassword') }}">
                                 @csrf
                                 <input type="hidden" name="token" value="{{ $token }}">
-                                <input type="hidden" id="viejoEmail" name="viejoEmail" value="{{ $viejoEmail }}">
+                                <input type="hidden" id="oldEmail" name="oldEmail" value="{{ $oldEmail }}">
 
                                 <div class="form-group row">
                                     <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $viejoEmail }}" required='' autocomplete="email" autofocus oninvalid="if (this.value == ''){this.setCustomValidity('Ingrese su email antes de continuar')} if (this.value != ''){this.setCustomValidity('El email ingresado es incorrecto')}" oninput="setCustomValidity('')">
+                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $oldEmail }}" required='' autocomplete="email" autofocus oninvalid="if (this.value == ''){this.setCustomValidity('Ingrese su email antes de continuar')} if (this.value != ''){this.setCustomValidity('El email ingresado es incorrecto')}" oninput="setCustomValidity('')">
 
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">

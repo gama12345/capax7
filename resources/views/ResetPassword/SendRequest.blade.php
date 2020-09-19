@@ -14,9 +14,19 @@
             poder reestablecer tu contraseña. Si has olvidado tu contraseña y correo electrónico registrado, 
             por favor ponte en contacto con nosotros en nuestra <a href="https://www.capax7consultores.com/">página web</a> o en nuestras <a href="https://www.facebook.com/capax7consultores/">redes sociales</a>.
         </p>
+        
         @if($errors->any())
             <div class="error">{{  $errors->first()  }}</div>
         @endif
+
+        @if(Session::has('success'))
+            <div class="success">{{  Session::get('success')  }}</div>
+        @endif
+
+        @if(Session::has('failed'))
+            <div class="failed">{{  Session::get('failed')  }}</div>
+        @endif
+
         <label>Email</label>
         <form action="{{ route('validateRequestPassword') }}" method="post">
             @csrf
@@ -25,12 +35,6 @@
             <button class="btn">Enviar instrucciones</button>
             <button type="button" class="btn" onclick='location.href="{{ route('main') }}"'>Volver</button>
         </form>
-        @if(Session::has('succes'))
-            <div class="success">{{  Session::get('success')  }}</div>
-        @endif
-        @if(Session::has('failed'))
-            <div class="failed">{{  Session::get('failed')  }}</div>
-        @endif
     </div>
 </body>
 </html>

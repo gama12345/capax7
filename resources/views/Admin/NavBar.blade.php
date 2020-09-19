@@ -11,7 +11,7 @@
         <div class="navbar">
              <nav>
                 <a href="{{ route('home','admin') }}"><img class="menuElement" src="/Icons/home-page.png" alt="No se pudo cargar el icono"></img></a>
-                <a><img class="menuElement" src="/Icons/register-client.png" alt="No se pudo cargar el icono"></img></a>
+                <a href="{{ route('showRegisterClient') }}"><img class="menuElement" src="/Icons/register-client.png" alt="No se pudo cargar el icono"></img></a>
                 <a><img class="menuElement" src="/Icons/stadistics.png" alt="No se pudo cargar el icono"></img></a>
                 <a href="{{ route('logout', 'admin') }}"><img class="menuElement" src="/Icons/logout.png" alt="No se pudo cargar el icono" placeholder="Salir"></img></a>
             </nav>

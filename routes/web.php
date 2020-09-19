@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
+use \App\Http\Controllers\AdminController;
 
 //Main
 Route::get('/', function () {
@@ -14,12 +15,11 @@ Route::get('/salir/{user}', [UserController::class, 'logout'])->name('logout');
 //Reset password
 Route::get('/recuperarcontraseña', [UserController::class, 'showRequestPassword'])->name('showRequestPassword');
 Route::post('/recuperarcontraseña/validando', [UserController::class, 'validateRequestPassword'])->name('validateRequestPassword');
-/*Route::get('/reestablecer/password/{token}', 'UsuarioController@verReestablecerPassword')->name('password.reset');
-Route::post('/reestablecer/password', 'UsuarioController@actualizarPassword')->name('actualizar.password');
-Route::post('reset_password_with_token', 'UsuarioController@reestablecerPassword')->name('reestablecerPassword');
-*/
+Route::get('/reestablecercontraseña/{token}', [UserController::class, 'showResetPassword'])->name('showResetPassword');
+Route::post('/reestablecerpassword', [UserController::class, 'updatePassword'])->name('updatePassword');
 
 //Admin
+Route::get('/registro', [AdminController::class, 'showRegisterClient'])->name('showRegisterClient');
 
 //Client
 

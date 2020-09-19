@@ -10,7 +10,7 @@
     <p>Se ha solicitado el reestablecimiento de contraseña para esta cuenta en Capax7 Consultores.
         <br><b>Si no has sido tu ignora este mensaje.</b>
          <br>Sigue el siguiente enlace para reestablecer tu contraseña correctamente:
-         <br>{{ $link }}
+         <br><a href="{{ $link }}">{{ $link }}</a>
     </p>
 </body>
 </html>

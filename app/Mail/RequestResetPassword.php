@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SolicitudReestablecerPassword extends Mailable
+class RequestResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
     public $link;

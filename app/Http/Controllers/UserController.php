@@ -83,8 +83,6 @@ class UserController extends Controller
 
                 if ($this->sendEmailResetPassword($request->email, $tokenData->token)) {
                     return back()->with('success', 'Se ha enviado un enlace a su correo para reestalecer su contraseña');
-                } else {
-                    return back()->with('failed', 'Ha ocurrido un error en el servidor, pruebe nuevamente o contactenos directamente');
                 }
             }else{
                 return back()->withErrors('No se encontró ninguna cuenta registrada con este email');
@@ -95,13 +93,33 @@ class UserController extends Controller
         //Obtenemos info del usuario
         $user = DB::table('clients')->where('email', $email)->select('razon_social', 'email')->first();
         //Generamos el enlace de reestablecimiento
-        $link = config('app.url') . 'reestablecercontraseña/' . $token . '?email=' . urlencode($user->email);
+        $link = config('app.url') .'/'. 'reestablecercontraseña/' . $token . '?email=' . urlencode($user->email);
 
             try {
                 \Mail::to($email)->send(new \App\Mail\RequestResetPassword($link));
                 return true;
             } catch (\Exception $e) {
-                return false;
+                return back()->withErrors($e->getMessage());
             }
+    }
+    public function showResetPassword(Request $request){
+        return view('ResetPassword.ResetPassword')->with('token', $request->token)->with('oldEmail', $request->email);
+    }
+    public function updatePassword(Request $request){
+        $validateData = $request->validate([
+            'email' => ['bail','required', 'same:oldEmail'],
+            'password' => ['bail','required', 'max:255', 'same:passwordconfirmation', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\ ^&\*]).{6,}$/']
+        ],[
+            'email.required' => 'Ingrese su email por favor',
+            'email.same' => 'El email ingresado no corresponde con el email de esta cuenta',
+            'password.same' => 'La contraseña ingresada no corresponde con su confirmación',
+            'password.max:255' => 'La contraseña no debe superar los 255 caracteres',
+            'password.regex' => 'La contraseña debe ser de al menos 6 caracteres e incluir al menos un número, un caracter especial y una letra mayúscula',
+        ]);
+        $data = DB::table('clients')->where('email', $request->get('email'))->select('id');
+        $updating = DB::table('clients')->where('email', $request->get('email'))->update(['contraseña'=>(bcrypt($request->get('password')))]);            
+        
+        DB::table('password_resets')->where('token', $request->token)->delete();
+        return back()->with('success',"éxito");
     }
 }
