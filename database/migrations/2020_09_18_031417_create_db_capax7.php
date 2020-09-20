@@ -21,7 +21,6 @@ class CreateDbCapax7 extends Migration
         Schema::create('clients', function (Blueprint $table) { 
             $table->increments('id');
             $table->string('razon_social');
-            $table->string('tipo_persona', 6);
             $table->string('rfc', 13);
             $table->string('email');
             $table->string('contraseña')->default("capax7");
@@ -31,6 +30,12 @@ class CreateDbCapax7 extends Migration
             $table->string('facebook', 100);
             $table->string('twitter', 100);
             $table->string('instagram', 100);
+            $table->string('tipo_persona', 6);
+            $table->string('es_lucrativa', 2);
+            $table->string('r_legal');
+            $table->string('cta_bancaria');
+            $table->string('imss');
+            $table->string('ace-stps');
         });
 
         Schema::create('documents', function (Blueprint $table){

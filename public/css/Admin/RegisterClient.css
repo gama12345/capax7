@@ -1,28 +1,91 @@
+:root{
+    --textColor: rgb(48, 127, 151);
+    --backgroundColor: rgb(188, 224, 235);
+    --inputBackgroundColor: rgb(226, 239, 243);
+    --shadowColor: rgb(155, 181, 189);
+    --borderColor: rgb(48, 127, 151);
+}
 .registerClient{
-    margin-left: 5%;
+    margin: 3% 0 20% 5%;
     height: 100vh;
     width: 95%;
-    background: #D96AA7;
     position: absolute;
     top: 0;
     left: 0;
     transition: all ease-in .5s;
     display: flex;
     justify-content: center;
-    align-items: center;
     font-family: Montserrat, sans-serif;
-    z-index: -1;
 } 
+
+form{
+    width: 50%;
+    min-width: 400px;
+}
 
 fieldset{
 	border-radius: 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	margin: 0px 0px 10px 0px;
-	border: 1px solid #FFD2D2;
+	border: 1px solid var(--borderColor);
 	padding: 20px;
-	background: #FFF4F4;
-	box-shadow: inset 0px 0px 15px #FFE5E5;
-	-moz-box-shadow: inset 0px 0px 15px #FFE5E5;
-	-webkit-box-shadow: inset 0px 0px 15px #FFE5E5;
+	background: var(--backgroundColor);
+	box-shadow: inset 0px 0px 15px var(--backgroundColor);
+	-moz-box-shadow: inset 0px 0px 15px var(--backgroundColor);
+	-webkit-box-shadow: inset 0px 0px 15px var(--backgroundColor);
 }
+fieldset legend{
+	color: var(--textColor);
+	border: 1px solid var(--borderColor);
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	background: var(--backgroundColor);
+	padding: 0px 8px 3px 8px;
+	font-weight: normal;
+	font-size: 16px;
+}
+label{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+label > span{
+	width: 20%;
+    color: var(--textColor);
+	font-weight: bold;
+	font-size: 14px;
+	text-shadow: 1px 1px 1px #fff;
+}
+.required{
+	color:red;
+	font-weight:normal;
+}
+.form-field {
+    border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border: 1px solid var(--borderColor);
+	outline: none;
+	color: black;
+	padding: 5px 8px 5px 8px;
+	box-shadow: inset 1px 1px 4px var(--shadowColor);
+	-moz-box-shadow: inset 1px 1px 4px var(--shadowColor);
+	-webkit-box-shadow: inset 1px 1px 4px var(--shadowColor);
+    background: var(--inputBackgroundColor);
+    width: 80%;
+}
+.form-field:focus{
+    background-color: white;
+}
+.doc_pdf, .org{
+    margin-left: 5%; margin-right: -5%;
+}
+@media all and (max-width: 1000px) {    
+    .doc_pdf, .org{
+        margin-left: 5px;
+        margin-right: 0;
+    }
+  }
+
