@@ -25,17 +25,17 @@ class CreateDbCapax7 extends Migration
             $table->string('email');
             $table->string('contraseña')->default("capax7");
             $table->string('telefono', 20);
-            $table->string('celular');
-            $table->string('pagina_web');
-            $table->string('facebook', 100);
-            $table->string('twitter', 100);
-            $table->string('instagram', 100);
+            $table->string('celular')->nullable();
+            $table->string('pagina_web')->nullable();
+            $table->string('facebook', 100)->nullable();
+            $table->string('twitter', 100)->nullable();
+            $table->string('instagram', 100)->nullable();
             $table->string('tipo_persona', 6);
-            $table->string('es_lucrativa', 2);
+            $table->string('es_lucrativa', 2)->nullable();
             $table->string('r_legal');
             $table->string('cta_bancaria');
             $table->string('imss');
-            $table->string('ace-stps');
+            $table->string('ace_stps');
         });
 
         Schema::create('documents', function (Blueprint $table){

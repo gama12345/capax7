@@ -20,6 +20,7 @@ Route::post('/reestablecerpassword', [UserController::class, 'updatePassword'])-
 
 //Admin
 Route::get('/registro', [AdminController::class, 'showRegisterClient'])->name('showRegisterClient');
+Route::post('/registro/guardando', [AdminController::class, 'registerClient'])->name('registerClient');
 
 //Client
 

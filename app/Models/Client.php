@@ -10,7 +10,7 @@ class Client extends Model
 {
     //Fields
     protected $fillable = [
-        'razon_social','tipo_persona','rfc','email','contraseña','telefono','celular','pagina_web','facebook','twitter','instagram'
+        'razon_social','tipo_persona','rfc','email','contraseña','telefono','celular','pagina_web','facebook','twitter','instagram','es_lucrativa','r_legal','cta_bancaria','imss','ace_stps'
     ];
     public $timestamps = false;
 

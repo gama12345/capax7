@@ -1,22 +1,36 @@
 :root{
     --textColor: rgb(48, 127, 151);
-    --backgroundColor: rgb(188, 224, 235);
+    --backgroundColor: rgba(188, 224, 235, 0.555);
     --inputBackgroundColor: rgb(226, 239, 243);
     --shadowColor: rgb(155, 181, 189);
     --borderColor: rgb(48, 127, 151);
 }
 .registerClient{
-    margin: 3% 0 20% 5%;
+	margin-top: -0.2%;
+	margin-left: 0%;
+	opacity: 0.5;
     height: 100vh;
     width: 95%;
     position: absolute;
     top: 0;
-    left: 0;
+	left: 0;
     transition: all ease-in .5s;
-    display: flex;
-    justify-content: center;
-    font-family: Montserrat, sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: Montserrat, sans-serif;
 } 
+.slideEffect{
+	margin-top: 0;
+	margin-left: 5%;
+	opacity: 1;
+}
+
+h2{
+	padding: 10px;
+	color: var(--textColor);
+	font-weight: 1000;
+}
 
 form{
     width: 50%;
@@ -81,6 +95,41 @@ label > span{
 }
 .doc_pdf, .org{
     margin-left: 5%; margin-right: -5%;
+}
+.error, .success{
+	color: white;
+	padding: 5px;
+	margin-bottom: 12px;
+	text-align: center;
+	font-size: 15px;
+	font-weight: 600;
+	width: 50%;
+  }
+  .error{
+	background-color: rgb(255, 97, 97);
+  }
+  .success{
+	background-color: rgb(27, 141, 4);
+  }
+button{
+	float: right;
+	background-color: var(--backgroundColor);
+	border: 1px solid var(--borderColor);
+	padding: 6px;
+	border-radius: 15%;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--textColor);
+	margin-bottom: 5%;
+	outline: none;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+button:hover{
+	transform: scale(1.05);
+}
+input[type=file]{
+	outline: none;
 }
 @media all and (max-width: 1000px) {    
     .doc_pdf, .org{
