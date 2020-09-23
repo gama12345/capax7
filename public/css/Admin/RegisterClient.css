@@ -26,9 +26,23 @@
 	opacity: 1;
 }
 
+.title{
+    width: 100%;
+    margin-top: 0%;
+    height: 10%;
+    background-size: cover;
+    background-image: url('/Images/sunset-banner.jpeg');
+	opacity: 0.8;
+	background-position-y: 30%;
+    display: flex;    
+    align-items: center;
+	justify-content: center;
+	margin-bottom: 5%;
+}
+
 h2{
 	padding: 10px;
-	color: var(--textColor);
+	color: white;
 	font-weight: 1000;
 }
 

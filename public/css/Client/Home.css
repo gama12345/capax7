@@ -1,0 +1,216 @@
+:root{
+    --backgroundColor: rgba(49, 178, 218, 0.644);
+}
+.home{
+	margin-top: -0.2%;
+    margin-left: 0%;
+    opacity: 0.5;
+    height: 100vh;
+    width: 95%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all ease-in .5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Montserrat, sans-serif;
+} 
+.slideEffect{
+	margin-top: 0;
+	margin-left: 5%;
+	opacity: 1;
+}
+.title{
+    width: 100%;
+    margin-top: 0%;
+    height: 10%;
+    background-size: cover;
+    background-image: url('/Images/client-data-banner.jpg');
+    opacity: 0.7;
+    background-position: center;
+    display: flex;    
+    align-items: center;
+    justify-content: center;
+}
+h1{
+    background: linear-gradient(to right, #2ab6b6 0%, #91670d 100%);
+    background-clip: text;
+	-webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+}
+
+.home__sections{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+input[type=text], input[type=password]{
+    width: 100%;
+    outline: none;
+	border: 1px solid black;
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 14px;
+    text-shadow: 0 0 0 #28375f;
+}
+select{
+    width: 50%;
+}
+.home__adminInfoSection, .home__gralInfoSection, .home__docSection{
+    border: 1px solid black;
+    padding: 20px;
+    width: 25%;
+
+}
+.home__docSectionRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.oculto{
+    display: none;
+}
+
+.home__inputData, .home__socialNetworkItem{
+    position: relative;
+    margin-bottom: 20px;
+}
+.home__inputData label, .home__socialNetworkItem a{
+    position: absolute;
+    top: -15px;
+    left: 0;
+    font-size: 14px;
+    font-weight: 400;
+	transition: all 0.5s ease-in-out;
+}
+.home_socialNetworks{
+    display: flex;
+    flex-direction: column;
+}
+
+.home__docImg{
+    width: 99%;
+    height: auto;
+    outline: none;
+    cursor: auto;
+    transition: all .5s;
+}
+.home__docContainer:hover{
+    transform: rotateY(30deg);
+}
+
+.home__docContainer{
+    position: relative;
+    text-align: center;
+    width: 30%;
+}
+
+.home__btnShow, .home__btnChange{
+    position: absolute;
+    background-color: var(--backgroundColor);
+    color: white;
+    left: 10%;
+    top: 15%;
+    width: 80%;
+    height: 30%;
+    font-size: 1vw;
+    font-weight: 600;
+    padding: 0;
+    outline: none;
+    cursor: pointer;
+    opacity: 0;
+    transition: all ease .4s;
+}
+.home__btnChange{
+    top: 50%;
+}
+.home__btnShow:hover, .home__btnChange:hover{
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+.modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #fefefe;
+    margin: auto;    
+    width: 50%;
+    border-radius: 10px;
+
+  }
+  .modal-header {
+    display: flex;
+    flex-direction: row;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    width: 100%;
+    height: 50px;
+    font-size: 25px;  
+    color: white;
+  }
+  .modal-header p{
+      font-size: 22px;
+      width: 93%;
+      height: 50%;
+      margin-top: 2%;
+      margin-left: 15px;
+      font-weight: 700;
+      text-align: left;
+  }
+  /* The Close Button */
+  .close {
+    color: white;
+    font-size: 30px;
+    width: 5%;
+    font-weight: bold;
+  }
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .modal-body {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+  }
+  .modal-body p{
+      color: black;
+      text-align: start;
+  }
+
+
+@media all and (max-width: 900px) {    
+    .home__sections{
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .home__adminInfoSection, .home__gralInfoSection, .home__docSection{
+        margin-bottom: 20px;
+        width: 50%;
+    }
+    .home__btnShow, .home__btnChange{
+        font-size: 2vw;
+    }
+  }

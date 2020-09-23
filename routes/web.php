@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\AdminController;
+use \App\Http\Controllers\ClientController;
 
 //Main
 Route::get('/', function () {
@@ -19,8 +20,9 @@ Route::get('/reestablecercontraseña/{token}', [UserController::class, 'showRese
 Route::post('/reestablecerpassword', [UserController::class, 'updatePassword'])->name('updatePassword');
 
 //Admin
-Route::get('/registro', [AdminController::class, 'showRegisterClient'])->name('showRegisterClient');
+Route::get('/registro/cliente', [AdminController::class, 'showRegisterClient'])->name('showRegisterClient');
 Route::post('/registro/guardando', [AdminController::class, 'registerClient'])->name('registerClient');
 
 //Client
+Route::get('/registro/donante', [ClientController::class, 'showRegisterDonor'])->name('showRegisterDonor');
 

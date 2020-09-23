@@ -27,7 +27,7 @@ class UserController extends Controller
             if (Auth::guard('admin')->attempt($credentials)) {
                 return redirect()->route('home', ['user' => 'admin']);
             }else if (Auth::guard('client')->attempt($credentials)) {
-                return redirect()->route('home', ['user' => 'client']);
+                return redirect()->route('home', ['user' => 'usuario']);
             }else{
                 return back()->withErrors(["noLogin"=>"Usuario o contraseña no válidos"]);
             }
@@ -39,7 +39,9 @@ class UserController extends Controller
         if(auth('admin')->check()){
             return view('admin.home');
         }else if(auth('client')->check()){
-            return view('client.home');
+            $data = DB::table('clients')->where('id', auth('client')->user()->id)->select('*')->first();
+            $docs = DB::table('documents')->where('cliente', auth('client')->user()->id)->select('nombre')->get();
+            return view('client.home')->with(['datos'=>$data])->with('docs', $docs);
         }else{
             return redirect()->route('main');
         }

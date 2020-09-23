@@ -6,7 +6,7 @@
 @extends('Admin.NavBar')
 @section('content')
     <div id="registerClient" class="registerClient">
-        <h2>NUEVO REGISTRO</h2>
+        <div class="title"><h2>NUEVO REGISTRO</h2></div>
         @if($errors->any())
             <div class="error">{{  $errors->first()  }}</div>
         @endif
@@ -135,7 +135,7 @@
                     <input type="file" name="doc_reg_marca" accept="application/pdf" style="max-width: 30%">
                 </label>
                 <label>
-                    <span tyle="max-width: 30%" title="Cluni">Cluni <span class="required">*</span></span>
+                    <span tyle="max-width: 30%" title="Clave Única de Inscripción al Registro de OSC">Cluni <span class="required">*</span></span>
                     <input type="file" name="doc_cluni" accept="application/pdf" style="width: 80%; max-width: 30%">
                     
                     <span class="doc_pdf" title="Multilaterales">Multi<span class="required">*</span></span>

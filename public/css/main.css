@@ -145,7 +145,7 @@ ul {
     font-size: 18px;
     font-weight: 400;
     pointer-events: none;
-	transition: all 0.5s ease-in-out;
+	  transition: all 0.5s ease-in-out;
 }
 .login__inputData input{
     border: 0;
