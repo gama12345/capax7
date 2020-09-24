@@ -25,4 +25,6 @@ Route::post('/registro/guardando', [AdminController::class, 'registerClient'])->
 
 //Client
 Route::get('/registro/donante', [ClientController::class, 'showRegisterDonor'])->name('showRegisterDonor');
+Route::post('/actualizar/documento/{orgType}/{doc}', [ClientController::class, 'updateDocument'])->name('updateDocument');
+Route::post('/actualizar/informacion/administrativa', [ClientController::class, 'updateAdministrativeInformation'])->name('updateAdministrativeInformation');
 
