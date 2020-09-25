@@ -87,7 +87,7 @@ select{
     position: relative;
     margin-bottom: 20px;
 }
-.home__inputData label, .home__socialNetworkItem a{
+.home__inputData label, .home__socialNetworkItem a, .home__inputData a{
     color: #1e70a0;
     position: absolute;
     top: -15px;
@@ -96,10 +96,6 @@ select{
     font-weight: 400;
 	transition: all 0.5s ease-in-out;
     font-family: Georgia, 'Times New Roman', Times, serif;
-}
-.home_socialNetworks{
-    display: flex;
-    flex-direction: column;
 }
 
 .home__adminInfoBtn, .home__gralInfoBtn {
@@ -253,6 +249,47 @@ select{
       display: flex;
       flex-direction: column;
     }
+.modal-btn{
+    height: 30px;
+    width: 40%;
+    margin: 5px 30% 0 30%;
+    background: #152889;
+    background-image: -webkit-linear-gradient(top, #152889, #1462E1);
+    background-image: -moz-linear-gradient(top, #152889, #1462E1);
+    background-image: -ms-linear-gradient(top, #152889, #1462E1);
+    background-image: -o-linear-gradient(top, #152889, #1462E1);
+    background-image: linear-gradient(to bottom, #152889, #1462E1);
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    line-height: 0px;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 12px;
+    box-shadow: 3px 0px 7px 0px #000000;
+    -webkit-box-shadow: 3px 0px 7px 0px #000000;
+    -moz-box-shadow: 3px 0px 7px 0px #000000;
+    text-shadow: 1px 1px 20px #000000;
+    border: solid #337FED 1px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+}
+.modal-btn:hover {
+    border: solid #337FED 1px;
+    background: #1E62D0;
+    background-image: -webkit-linear-gradient(top, #1E62D0, #3D94F6);
+    background-image: -moz-linear-gradient(top, #1E62D0, #3D94F6);
+    background-image: -ms-linear-gradient(top, #1E62D0, #3D94F6);
+    background-image: -o-linear-gradient(top, #1E62D0, #3D94F6);
+    background-image: linear-gradient(to bottom, #1E62D0, #3D94F6);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    }
 
     .error, .success{
         color: white;
@@ -287,11 +324,19 @@ select{
         font-size: 28px;
         margin-right: 4%;
     }
+    .modal-btn{
+        width: 30%;
+        font-size: 14px;
+    }
   }
   
 @media all and (max-width: 900px) {  
     .modal-header p{
         font-size: 18px;
+    }
+    .modal-btn{
+        width: 80px;
+        font-size: 12px;
     }
 }
 @media all and (max-width: 700px) { 
@@ -303,5 +348,8 @@ select{
     }
     .modal-body p{
         font-size: 14px;
+    }
+    .modal-btn{
+        margin: 0 15% 0 15%;
     }
 }

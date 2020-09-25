@@ -75,7 +75,7 @@
 
             <fieldset class="home__gralInfoSection">
                 <legend>Generales</legend>
-                <form>
+                <form method="post" action="{{ route('updateGeneralInformation') }}">
                     @csrf
                     <div class="home__inputData">
                             <input name="email" type="text" value="{{ $datos->email }}"/>
@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="home__inputData">
-                            <input name="contraseña" type="password" value="********"/>
+                            <input name="contraseña" type="password" value="******"/>
                             <label>Contraseña</label>
                     </div>
 
@@ -98,24 +98,23 @@
                     </div>
 
                     <div class="home__inputData">
-                            <input name="pagina_web" type="text" value="{{ $datos->pagina_web }}"/>
-                            <label>Página web</label>
+                        <input name="pagina_web" type="text" value="{{ $datos->pagina_web }}"/>                            
+                        <a href="{{ $datos->pagina_web }}">Página web</a>
                     </div>
 
-                    <div class="home__socialNetworks">
-                        <div class="home__socialNetworkItem">
-                            <input name="facebook" type="text" value="{{ $datos->facebook }}"/>
-                            <a href='https://www.facebook.com/{{$datos->facebook}}'>Facebook</a>
-                        </div>
-                        <div class="home__socialNetworkItem">
-                            <input name="twitter" type="text" value="{{ $datos->twitter }}"/>
-                            <a href='https://www.twitter.com/{{$datos->twitter}}'>Twitter</a>
-                        </div>
-                        <div class="home__socialNetworkItem">
-                            <input name="facebook" type="text" value="{{ $datos->instagram }}"/>
-                            <a href='https://www.instagram.com/{{$datos->instagram}}'>Instagram</a>
-                        </div>
+                    <div class="home__socialNetworkItem">
+                        <input name="facebook" type="text" value="{{ $datos->facebook }}"/>
+                        <a href='https://www.facebook.com/{{$datos->facebook}}'>Facebook</a>
                     </div>
+                    <div class="home__socialNetworkItem">
+                        <input name="twitter" type="text" value="{{ $datos->twitter }}"/>
+                        <a href='https://www.twitter.com/{{$datos->twitter}}'>Twitter</a>
+                    </div>
+                    <div class="home__socialNetworkItem">
+                        <input name="instagram" type="text" value="{{ $datos->instagram }}"/>
+                        <a href='https://www.instagram.com/{{$datos->instagram}}'>Instagram</a>
+                    </div>
+
                     <button class="home__adminInfoBtn">
                         <svg width="150px" height="25px" viewBox="0 0 150 25" class="border">
                             <polyline points="149,1 149,24 1,24 1,1 149,1" class="bg-line" />
@@ -132,29 +131,29 @@
                 <div class="home__docSectionRow" >
                     <div class="home__docContainer">
                         <input type="image" id="rfc" class="home__docImg" src="/Images/rfc-logo.png" data-toggle="tooltip" title="RFC"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[0]->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $rfc->nombre }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('rfc')">Cambiar</button>
                     </div>
                     <div class="home__docContainer">
                         <input type="image" id="r_legal" class="home__docImg" src="/Images/r-legal-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Representante legal"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[1]->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $r_legal->nombre }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('r_legal')">Cambiar</button>                    
                     </div>
                     <div class="home__docContainer">
                         <input type="image" id="cta_bancaria" class="home__docImg" src="/Images/cta-bancaria-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Cuenta bancaria"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[2]->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $cta_bancaria->nombre }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('cta_bancaria')">Cambiar</button>                    
                     </div>
                 </div>
                 <div class="home__docSectionRow" >
                     <div class="home__docContainer">
                         <input type="image" id="imss" class="home__docImg" src="/Images/imss-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="N° Seguro (IMSS)"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[3]->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $imss->nombre }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('imss')">Cambiar</button>                    
                     </div>
                     <div class="home__docContainer">
                         <input type="image" id="ace_stps" class="home__docImg" src="/Images/ace-stps-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Agente Capacitador Externo"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[4]->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $ace_stps->nombre }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('ace_stps')">Cambiar</button>                    
                     </div>
                 </div>
@@ -162,12 +161,12 @@
                 <div id="lucrative" class="home__docSectionRow oculto">
                     <div class="home__docContainer">
                         <input type="image" id="acta_constitutiva_lucrativa" class="home__docImg" src="/Images/acta-constitutiva-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Acta Constitutiva"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[5]->nombre ?? '' }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $acta_constitutiva->nombre ?? '' }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('acta_constitutiva_lucrativa')">Cambiar</button>                    
                     </div>
                     <div class="home__docContainer">
                         <input type="image" id="folio_reg_electronico_lucrativa" class="home__docImg" src="/Images/folio-reg-electronico-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Folio Registral Electrónico"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[6]->nombre ?? '' }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $folio_reg_electronico->nombre ?? '' }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('folio_reg_electronico_lucrativa')">Cambiar</button>                    
                     </div>
                 </div>
@@ -175,34 +174,34 @@
                     <div class="home__docSectionRow" >
                         <div class="home__docContainer">
                             <input type="image" id="acta_constitutiva_no_lucrativa" class="home__docImg" src="/Images/acta-constitutiva-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Acta Constitutiva"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[5]->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $acta_constitutiva->nombre ?? '' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('acta_constitutiva_no_lucrativa')">Cambiar</button>                    
                         </div>
                         <div class="home__docContainer">
                             <input type="image" id="folio_reg_electronico_no_lucrativa" class="home__docImg" src="/Images/folio-reg-electronico-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Folio Registral Electrónico"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[6]->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $folio_reg_electronico->nombre ?? '' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('folio_reg_electronico_no_lucrativa')">Cambiar</button>                    
                         </div>
                         <div class="home__docContainer">
                             <input type="image" id="autorizacion_fiscal" class="home__docImg" src="/Images/autorizacion-fiscal-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Autorización Fiscal"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[7]->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $autorizacion_fiscal->nombre ?? '' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('autorizacion_fiscal')">Cambiar</button>                    
                         </div>
                     </div>
                     <div class="home__docSectionRow" >
                         <div class="home__docContainer">
                             <input type="image" id="reg_marca" class="home__docImg" src="/Images/reg-marca-logo.jpg" onclick="showModal(this.id)" data-toggle="tooltip" title="Registro de Marca"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[8]->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $reg_marca->nombre ?? '' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('reg_marca')">Cambiar</button>                    
                         </div>
                         <div class="home__docContainer">
                             <input type="image" id="cluni" class="home__docImg" src="/Images/cluni-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Clave Única de Inscripción al Registro de OSC"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[9]->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $cluni->nombre ?? '' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('cluni')">Cambiar</button>                    
                         </div>
                         <div class="home__docContainer">
                             <input type="image" id="multilaterales" class="home__docImg" src="/Images/multilaterales-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Multilaterales"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $docs[10]->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $multilaterales->nombre ?? '' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('multilaterales')">Cambiar</button>                    
                         </div>
                     </div>
@@ -219,7 +218,7 @@
                 <div class="modal-body">                    
                     <form id="modal-rfc" method="post" action="{{ route('updateDocument',['orgType'=>'Fisica', 'doc'=>'rfc']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento RFC</p>
+                        <p>Seleccione su nuevo RFC</p>
                         <input type="file" name="doc_rfc" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
@@ -237,49 +236,49 @@
                     </form>
                     <form id="modal-imss" method="post" action="{{ route('updateDocument',['orgType'=>'Fisica', 'doc'=>'imss']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento IMSS</p>
+                        <p>Seleccione su nuevo documento de seguro (IMSS)</p>
                         <input type="file" name="doc_imss" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
                     <form id="modal-ace_stps" method="post" action="{{ route('updateDocument',['orgType'=>'Fisica', 'doc'=>'ace_stps']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento Agente Capacitador</p>
+                        <p>Seleccione su nuevo agente capacitador</p>
                         <input type="file" name="doc_ace_stps" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
                     <form id="modal-acta_constitutiva_lucrativa" method="post" action="{{ route('updateDocument',['orgType'=>'Moral', 'doc'=>'acta_constitutiva_lucrativa']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento Acta</p>
+                        <p>Seleccione su nueva acta constitutiva</p>
                         <input type="file" name="doc_acta_constitutiva_lucrativa" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
                     <form id="modal-acta_constitutiva_no_lucrativa" method="post" action="{{ route('updateDocument',['orgType'=>'Moral', 'doc'=>'acta_constitutiva_no_lucrativa']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento Acta</p>
+                        <p>Seleccione su nueva acta constitutiva</p>
                         <input type="file" name="doc_acta_constitutiva_no_lucrativa" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
                     <form id="modal-folio_reg_electronico_lucrativa" method="post" action="{{ route('updateDocument',['orgType'=>'Moral', 'doc'=>'folio_reg_electronico_lucrativa']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento Folio Registral</p>
+                        <p>Seleccione su nuevo folio registral</p>
                         <input type="file" name="doc_folio_reg_electronico_lucrativa" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
                     <form id="modal-folio_reg_electronico_no_lucrativa" method="post" action="{{ route('updateDocument',['orgType'=>'Moral', 'doc'=>'folio_reg_electronico_no_lucrativa']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento Folio Registral</p>
+                        <p>Seleccione su nuevo folio registral</p>
                         <input type="file" name="doc_folio_reg_electronico_no_lucrativa" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
                     <form id="modal-autorizacion_fiscal" method="post" action="{{ route('updateDocument',['orgType'=>'Moral', 'doc'=>'autorizacion_fiscal']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento Autorizacion Fiscal</p>
+                        <p>Seleccione su nueva autorizacion fiscal</p>
                         <input type="file" name="doc_autorizacion_fiscal" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
                     <form id="modal-reg_marca" method="post" action="{{ route('updateDocument',['orgType'=>'Moral', 'doc'=>'reg_marca']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento Registro de marca</p>
+                        <p>Seleccione su nuevo documento de registro de marca</p>
                         <input type="file" name="doc_reg_marca" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>
@@ -291,7 +290,7 @@
                     </form>
                     <form id="modal-multilaterales" method="post" action="{{ route('updateDocument',['orgType'=>'Moral', 'doc'=>'multilaterales']) }}" style="display: none" enctype="multipart/form-data">
                         @csrf
-                        <p>Seleccione su nuevo documento Multilaterales</p>
+                        <p>Seleccione su nuevo documento multilaterales</p>
                         <input type="file" name="doc_multilaterales" accept="application/pdf" class="home__docBtn" />
                         <button class="modal-btn">Guardar</button>
                     </form>

@@ -40,8 +40,19 @@ class UserController extends Controller
             return view('admin.home');
         }else if(auth('client')->check()){
             $data = DB::table('clients')->where('id', auth('client')->user()->id)->select('*')->first();
-            $docs = DB::table('documents')->where('cliente', auth('client')->user()->id)->select('nombre')->get();
-            return view('client.home')->with(['datos'=>$data])->with('docs', $docs);
+            $rfc = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','rfc')->select('nombre')->first();
+            $r_legal = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','r_legal')->select('nombre')->first();
+            $cta_bancaria = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','cta_bancaria')->select('nombre')->first();
+            $imss = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','imss')->select('nombre')->first();
+            $ace_stps = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','ace_stps')->select('nombre')->first();
+            $acta_constitutiva = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','acta_constitutiva')->select('nombre')->first();
+            $folio_reg_electronico = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','folio_reg_electronico')->select('nombre')->first();
+            $autorizacion_fiscal = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','autorizacion_fiscal')->select('nombre')->first();
+            $reg_marca = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','reg_marca')->select('nombre')->first();
+            $cluni = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','cluni')->select('nombre')->first();
+            $multilaterales = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','multilaterales')->select('nombre')->first();
+
+            return view('client.home')->with(['datos'=>$data])->with('rfc', $rfc)->with('r_legal', $r_legal)->with('cta_bancaria', $cta_bancaria)->with('imss', $imss)->with('ace_stps', $ace_stps)->with('acta_constitutiva', $acta_constitutiva)->with('folio_reg_electronico',$folio_reg_electronico)->with('reg_marca', $reg_marca)->with('cluni', $cluni)->with('multilaterales', $multilaterales);
         }else{
             return redirect()->route('main');
         }
