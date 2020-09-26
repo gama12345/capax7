@@ -34,13 +34,17 @@
     justify-content: center;
 }
 h1{
-    background: linear-gradient(to right, #2ab6b6 0%, #91670d 100%);
+    background: linear-gradient(to right, #2ab6b6 0%, #bd8712 100%);
     background-clip: text;
 	-webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 900;
+	letter-spacing: 1.1rem;
 }
-
+legend{
+    color: #228bc7;
+    font-weight: bold;
+}
 .home__sections{
     width: 100%;
     display: flex;
@@ -58,6 +62,7 @@ input[type=text], input[type=password]{
     font-size: 14px;
     margin-top: 5px;
 }
+
 select{
     width: 50%;
     border: 1px solid #228bc7;
@@ -66,8 +71,12 @@ select{
     font-size: 14px;
     outline: none;
 }
+input[type=text]:focus, input[type=password]:focus, select:focus{
+    background-color: #228ac72a;
+}
 .home__adminInfoSection, .home__gralInfoSection, .home__docSection{
-    border: 1px solid black;
+    border: 1px solid #228bc7;
+    border-radius: 8px;
     padding: 20px;
     width: 25%;
     font-family: Georgia, 'Times New Roman', Times, serif;
@@ -108,6 +117,7 @@ select{
     outline: none;
     transition: 1s ease-in-out;
     position: relative;
+    float: right;
   }
   
   svg {

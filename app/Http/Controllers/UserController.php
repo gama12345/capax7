@@ -52,7 +52,7 @@ class UserController extends Controller
             $cluni = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','cluni')->select('nombre')->first();
             $multilaterales = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','multilaterales')->select('nombre')->first();
 
-            return view('client.home')->with(['datos'=>$data])->with('rfc', $rfc)->with('r_legal', $r_legal)->with('cta_bancaria', $cta_bancaria)->with('imss', $imss)->with('ace_stps', $ace_stps)->with('acta_constitutiva', $acta_constitutiva)->with('folio_reg_electronico',$folio_reg_electronico)->with('reg_marca', $reg_marca)->with('cluni', $cluni)->with('multilaterales', $multilaterales);
+            return view('client.home')->with(['datos'=>$data])->with('rfc', $rfc)->with('r_legal', $r_legal)->with('cta_bancaria', $cta_bancaria)->with('imss', $imss)->with('ace_stps', $ace_stps)->with('acta_constitutiva', $acta_constitutiva)->with('folio_reg_electronico',$folio_reg_electronico)->with('autorizacion_fiscal',$autorizacion_fiscal)->with('reg_marca', $reg_marca)->with('cluni', $cluni)->with('multilaterales', $multilaterales);
         }else{
             return redirect()->route('main');
         }

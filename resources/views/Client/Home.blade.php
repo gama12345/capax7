@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="home__inputData">
-                        <select type="text" id="select_tipo_persona" name="tipo_persona" onchange="orgCheckType(this.value)">
+                        <select type="text" id="select_tipo_persona" name="tipo_persona" onchange="orgCheckType(this.value)" title="Cambiar su persona puede afectar a sus documentos guardados">
                             <option value="Fisica">Fisica</option>
                             <option value="Moral">Moral</option>
                         </select>
@@ -320,6 +320,7 @@
                     document.getElementById('lucrative').classList.add("oculto");
                     document.getElementById('non-lucrative').classList.add("oculto");
             }
+            alert('Cambiar su persona puede afectar a sus documentos guardados\nOprima "Guardar cambios" si esta seguro');
         }
         function isLucrative(type){
             if(type == 'Si'){
@@ -329,6 +330,7 @@
                 document.getElementById('lucrative').classList.add("oculto");
                 document.getElementById('non-lucrative').classList.remove("oculto");
             }
+            alert('Cambiar su tipo puede afectar a sus documentos guardados\nOprima "Guardar cambios" si esta seguro');
         }
         function showModal(id){
             document.getElementById('modal').style.display = 'block';

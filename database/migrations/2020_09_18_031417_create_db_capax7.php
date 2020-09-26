@@ -54,9 +54,8 @@ class CreateDbCapax7 extends Migration
             $table->string('nacionalidad');
             $table->string('email');
             $table->string('telefono', 20);
+            $table->string('celular')->nullable();
             $table->string('domicilio');
-            $table->float('aportacion_mensual', 8, 2);
-            $table->string('celular');
 
         });
 

@@ -7,10 +7,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Document;
+use App\Models\Donor;
 
 class ClientController extends Controller
 {
-    //NavBar menu views
+    //Views
+    public function showDonorsMenu(){
+        if(auth('client')->check()){
+            return view('Client.DonorsMenu');
+        }else{
+            return redirect()->route('main');
+        }
+    }
     public function showRegisterDonor(){
         if(auth('client')->check()){
             return view('Client.RegisterDonor');
@@ -18,6 +26,28 @@ class ClientController extends Controller
             return redirect()->route('main');
         }
     }
+    public function showDonors(){
+        if(auth('client')->check()){
+            return view('Client.Donors');
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showRegisterDonation(){
+        if(auth('client')->check()){
+            return view('Client.RegisterDonation');
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showDonations(){
+        if(auth('client')->check()){
+            return view('Client.Donations');
+        }else{
+            return redirect()->route('main');
+        }
+    }
+
     //Functions
     public function updateDocument(Request $request){
         $currentDoc = 'doc_'.$request->doc;
@@ -290,5 +320,48 @@ class ClientController extends Controller
         }
 
         return back()->with('success','Datos actualizados correctamente');
+    }
+
+    public function registerDonor(Request $request){
+        //Validation
+        $validation = $request->validate([
+            'razon_social' => ['required','unique:clients', 'max:200'],
+            'rfc' => ['required','unique:donors', 'regex:/^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([A-Z]|[0-9]){2}([A]|[0-9]){1})?$/'],
+            'nacionalidad' => ['required','regex:/^[A-Za-zÁÉÍÓÚáéíóú]{4,100}/'],
+            'email' => ['required','email','unique:donors'],
+            'telefono' => ['required','regex:/^[0-9]{10}/'],
+            'celular' => ['nullable','regex:/^[0-9]{10}/'],
+            'domicilio' => ['required','regex:/^(Calle)\s[\w\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
+        ],
+        [
+            'razon_social.required' => 'Especifique la razón social o nombre',
+            'razon_social.unique' => 'Esta razón social ya se encuentra registrada',
+            'razon_social.max' => "Campo 'Razón social' no puede superar los 200 caracteres",
+            'rfc.required' => 'Especifique el RFC',
+            'rfc.unique' => 'Este RFC ya se encuentra registrado',
+            'rfc.regex' => 'Formato de RFC no reconocido, intente de nuevo',
+            'email.required' => 'Hace falta ingresar un email',
+            'email.email' => 'Formato de email incorrecto/desconocido',
+            'email.unique' => 'Este email ya se encuentra registrado',
+            'nacionalidad.required' => 'Campo "Nacionalidad" requerido',
+            'nacionalidad.regex' => 'Nacionalidad no reconocida. Use sólo de 4 a 100 caracteres',
+            'telefono.required' => 'Ingrese número de teléfono',
+            'telefono.regex' => 'Formato de teléfono desconocido, ingrese 10 digitos',
+            'celular.regex' => 'Formato de celular desconocido, ingrese 10 digitos',
+            'domicilio.required' => 'Especifique la dirección',
+            'domicilio.regex' => 'Formato de dirección no válido. Ejemplo "Calle Independencia #3 Colonia Centro de la colonia C.P. 12345"',
+        ]);
+        $newDonor = new Donor([
+            'razon_social' => $request->razon_social,
+            'tipo_persona' => $request->tipo_persona,
+            'rfc' => $request->rfc,
+            'nacionalidad' => $request->nacionalidad,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+            'celular' => $request->celular,
+            'domicilio' => $request->domicilio,
+        ]);
+        $newDonor->save();
+        return back()->with('success',"Donante registrado con éxito");
     }
 }
