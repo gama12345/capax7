@@ -18,48 +18,49 @@
         <div class="donors__sections">
             <fieldset class="donors__donorInfoSection">
                     <legend>Información</legend>
-                    <form method="post" action="{{ route('registerDonor') }}" autocomplete="off">
+                    <form method="post" action="{{ route('updateDonors') }}" autocomplete="off" onKeyPress="return (event.keyCode !== 13)">
                         @csrf
+                        <input id="id" name="id" hidden value="{{ old('id') }}"/>
                         <div class="donors__inputData">
-                                <input id="autoComplete" tabindex="1" name="razon_social" type="text" />
+                                <input id="autoComplete" tabindex="1" name="razon_social" type="text" value="{{ old('razon_social') }}"/>
                                 <label>Razón social *</label>
                         </div>
 
                         <div class="donors__inputData">
                             <select id="tipo_persona" type="text" id="select_tipo_persona" name="tipo_persona" disabled>
-                                <option value="Fisica">Fisica</option>
-                                <option value="Moral">Moral</option>
+                                <option value="Fisica" @if (old("tipo_persona") == "Fisica") {{ 'selected' }} @endif>Fisica</option>
+                                <option value="Moral" @if (old("tipo_persona") == "Moral") {{ 'selected' }} @endif>Moral</option>
                             </select>                        
                             <label>Persona</label>
                         </div>
 
                         <div class="donors__inputData">
-                                <input id="rfc" name="rfc" type="text" disabled/>
+                                <input id="rfc" name="rfc" type="text" disabled value="{{ old('rfc') }}"/>
                                 <label>RFC *</label>
                         </div>
 
                         <div class="donors__inputData">
-                                <input id="nacionalidad" name="nacionalidad" type="text" disabled/>
-                                <label>Nacionalidad *</label>
-                        </div>
-
-                        <div class="donors__inputData">
-                                <input id="email" name="email" type="text" disabled/>
+                                <input id="email" name="email" type="text" disabled value="{{ old('email') }}"/>
                                 <label>Email *</label>
                         </div>
 
                         <div class="donors__inputData">
-                                <input id="telefono" name="telefono" type="text" disabled/>
+                                <input id="nacionalidad" name="nacionalidad" type="text" disabled value="{{ old('nacionalidad') }}"/>
+                                <label>Nacionalidad *</label>
+                        </div>
+
+                        <div class="donors__inputData">
+                                <input id="telefono" name="telefono" type="text" disabled value="{{ old('telefono') }}"/>
                                 <label>Teléfono *</label>
                         </div>
 
                         <div class="donors__inputData">
-                                <input id="celular" name="celular" type="text" disabled/>
+                                <input id="celular" name="celular" type="text" disabled value="{{ old('celular') }}"/>
                                 <label>Celular</label>
                         </div>
 
                         <div class="donors__inputData">
-                                <input id="domicilio" name="domicilio" type="text" disabled/>
+                                <input id="domicilio" name="domicilio" type="text" disabled value="{{ old('domicilio') }}"/>
                                 <label title="Calle, número, colonia y código postal">Domicilio *</label>
                         </div>
 
@@ -89,9 +90,22 @@
     <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/js/autoComplete.min.js"></script>
 
     <script>
+        //On window load show animation
         window.onload = function() {
             document.getElementById('donors').className += " slideEffect";
         }
+        //if there was an error while updating, show inputs and values
+        if(document.getElementById('id').value != ""){
+            document.getElementById('rfc').disabled = false;
+            document.getElementById('tipo_persona').disabled = false;
+            document.getElementById('nacionalidad').disabled = false;
+            document.getElementById('email').disabled = false;
+            document.getElementById('telefono').disabled = false;
+            document.getElementById('celular').disabled = false;
+            document.getElementById('domicilio').disabled = false;
+            document.getElementById('btnGuardar').disabled = false;
+        }
+        //Load autoComplete razon_social
         new autoComplete({
             data: {                              // Data src [Array, Function, Async] | (REQUIRED)
                 src: @json($donors),
@@ -154,9 +168,9 @@
                 document.getElementById('telefono').value = feedback.selection.value.telefono;
                 document.getElementById('celular').value = feedback.selection.value.celular;
                 document.getElementById('domicilio').value = feedback.selection.value.domicilio;
+                document.getElementById('id').value = feedback.selection.value.id;
             }             
         });
-
     </script>
 
 @endsection

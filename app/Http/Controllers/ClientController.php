@@ -367,6 +367,72 @@ class ClientController extends Controller
         return back()->with('success',"Donante registrado con éxito");
     }
     public function updateDonors(Request $request){
-        
+        $orgData = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->select('*')->first();
+
+        if($request->razon_social != $orgData->razon_social){
+            //Validation
+            $validation = $request->validate([
+                'razon_social' => ['required','unique:clients', 'max:200'],
+            ],[
+                'razon_social.required' => 'Especifique la razón social o nombre',
+                'razon_social.unique' => 'Esta razón social ya se encuentra registrada',
+                'razon_social.max' => "Campo 'Razón social' no puede superar los 200 caracteres",
+            ]);
+            //Updating
+            $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['razon_social'=>($request->razon_social)]);
+        }
+
+        if($request->rfc != $orgData->rfc){
+            //Validation
+            $validation = $request->validate([
+                'rfc' => ['required','unique:donors', 'regex:/^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([A-Z]|[0-9]){2}([A]|[0-9]){1})?$/'],
+            ],[
+                'rfc.required' => 'Especifique el RFC',
+                'rfc.unique' => 'Este RFC ya se encuentra registrado',
+                'rfc.regex' => 'Formato de RFC no reconocido, intente de nuevo',
+            ]);
+            //Updating
+            $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['rfc'=>($request->rfc)]);
+        }
+
+        if($request->email != $orgData->email){
+            //Validation
+            $validation = $request->validate([
+                'email' => ['required','email','unique:donors'],
+
+            ],[
+                'email.required' => 'Hace falta ingresar un email',
+                'email.email' => 'Formato de email incorrecto/desconocido',
+                'email.unique' => 'Este email ya se encuentra registrado',
+            ]);
+            //Updating
+            $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['email'=>($request->email)]);
+        }
+
+        //Validation
+        $validation = $request->validate([
+            'nacionalidad' => ['required','regex:/^[A-Za-zÁÉÍÓÚáéíóú]{4,100}/'],
+            'telefono' => ['required','regex:/^[0-9]{10}/'],
+            'celular' => ['nullable','regex:/^[0-9]{10}/'],
+            'domicilio' => ['required','regex:/^(Calle)\s[\w\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
+        ],
+        [
+            'nacionalidad.required' => 'Campo "Nacionalidad" requerido',
+            'nacionalidad.regex' => 'Nacionalidad no reconocida. Use sólo de 4 a 100 caracteres',
+            'telefono.required' => 'Ingrese número de teléfono',
+            'telefono.regex' => 'Formato de teléfono desconocido, ingrese 10 digitos',
+            'celular.regex' => 'Formato de celular desconocido, ingrese 10 digitos',
+            'domicilio.required' => 'Especifique la dirección',
+            'domicilio.regex' => 'Formato de dirección no válido. Ejemplo "Calle Independencia #3 Colonia Centro de la colonia C.P. 12345"',
+        ]);
+        //Updating
+        $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['tipo_persona'=>($request->tipo_persona)]);
+        $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['nacionalidad'=>($request->nacionalidad)]);
+        $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['telefono'=>($request->telefono)]);
+        $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['celular'=>($request->celular)]);
+        $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['domicilio'=>($request->domicilio)]);
+
+        return back()->with('success','Datos actualizados');
+
     }
 }
