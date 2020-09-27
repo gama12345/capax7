@@ -71,7 +71,7 @@
                                 <polyline points="149,1 149,24 1,24 1,1 149,1" class="bg-line" />
                                 <polyline points="149,1 149,24 1,24 1,1 149,1" class="hl-line" />
                             </svg>
-                            <span>Guardar cambios</span>
+                            <span>Registrar donante</span>
                         </button>
                         <button type="button" class="registerDonor__donorBackBtn" onclick="location.href = '{{ route('showDonorsMenu') }}'">
                             <svg width="100px" height="25px" viewBox="0 0 100 25" class="border">

@@ -11,7 +11,7 @@ class Donor extends Model
 
     //Fields
     protected $fillable = [
-        'razon_social','tipo_persona','rfc','nacionalidad','email','telefono','domicilio','aportacion_mensual','celular'
+        'razon_social','tipo_persona','rfc','nacionalidad','email','telefono','domicilio','aportacion_mensual','celular','registrado_por'
     ];
     public $timestamps = false;
 }

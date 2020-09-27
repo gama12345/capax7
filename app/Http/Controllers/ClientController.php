@@ -27,12 +27,13 @@ class ClientController extends Controller
         }
     }
     public function showDonors(){
-        if(auth('client')->check()){
-            return view('Client.Donors');
+        $donors = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->select('*')->get();
+        if(auth('client')->check()){            
+            return view('Client.Donors')->with('donors',$donors);
         }else{
             return redirect()->route('main');
         }
-    }
+    }    
     public function showRegisterDonation(){
         if(auth('client')->check()){
             return view('Client.RegisterDonation');
@@ -360,8 +361,12 @@ class ClientController extends Controller
             'telefono' => $request->telefono,
             'celular' => $request->celular,
             'domicilio' => $request->domicilio,
+            'registrado_por' => auth('client')->user()->id,
         ]);
         $newDonor->save();
         return back()->with('success',"Donante registrado con éxito");
+    }
+    public function updateDonors(Request $request){
+        
     }
 }

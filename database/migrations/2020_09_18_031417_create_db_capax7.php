@@ -56,7 +56,8 @@ class CreateDbCapax7 extends Migration
             $table->string('telefono', 20);
             $table->string('celular')->nullable();
             $table->string('domicilio');
-
+            $table->integer('registrado_por')->unsigned();             
+            $table->foreign('registrado_por')->references('id')->on('clients')->onDelete('cascade'); 
         });
 
         Schema::create('donations', function (Blueprint $table){
