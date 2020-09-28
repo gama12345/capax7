@@ -17,7 +17,7 @@
         <div class="registerDonor__sections">
             <fieldset class="registerDonor__donorInfoSection">
                     <legend>Nuevo registro</legend>
-                    <form method="post" action="{{ route('registerDonor') }}">
+                    <form method="post" action="{{ route('registerDonor') }}" autocomplete="off" onKeyPress="return (event.keyCode !== 13)">
                         @csrf
                         <div class="registerDonor__inputData">
                                 <input name="razon_social" type="text" value="{{ old('razon_social') }}"/>

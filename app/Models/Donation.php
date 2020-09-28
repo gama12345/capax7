@@ -11,7 +11,7 @@ class Donation extends Model
 
     //Fields
     protected $fillable = [
-        'cantidad','fecha','donante'
+        'cantidad','fecha','donante','cliente'
     ];
     public $timestamps = false;
 }

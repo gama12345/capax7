@@ -24,6 +24,7 @@ Route::get('/registro/cliente', [AdminController::class, 'showRegisterClient'])-
 Route::post('/registro/guardando', [AdminController::class, 'registerClient'])->name('registerClient');
 
 //Client
+Route::get('/estadisticas', [ClientController::class, 'showStatistics'])->name('showStatistics');
 Route::get('/donantes', [ClientController::class, 'showDonorsMenu'])->name('showDonorsMenu');
 Route::get('/donantes/nuevo', [ClientController::class, 'showRegisterDonor'])->name('showRegisterDonor');
 Route::post('/donantes/nuevo/validando', [ClientController::class, 'registerDonor'])->name('registerDonor');

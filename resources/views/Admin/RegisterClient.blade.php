@@ -13,7 +13,7 @@
         @if(Session::has('success'))
             <div class="success">{{  Session::get('success')  }}</div>
         @endif
-        <form method="post" action="{{ route('registerClient') }}" enctype="multipart/form-data">
+        <form method="post" action="{{ route('registerClient') }}" enctype="multipart/form-data" autocomplete="off" onKeyPress="return (event.keyCode !== 13)">
         @csrf
             <fieldset >
                 <legend>Información básica</legend>

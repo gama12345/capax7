@@ -63,9 +63,11 @@ class CreateDbCapax7 extends Migration
         Schema::create('donations', function (Blueprint $table){
             $table->increments('id');
             $table->float('cantidad', 8, 2);	
-            $table->string('fecha',100);	
+            $table->date('fecha');	
             $table->integer('donante')->unsigned();
-            $table->foreign('donante')->references('id')->on('donors')->onDelete('cascade');   
+            $table->foreign('donante')->references('id')->on('donors')->onDelete('cascade');  
+            $table->integer('cliente')->unsigned();             
+            $table->foreign('cliente')->references('id')->on('clients')->onDelete('cascade');  
         });
 
         Schema::create('password_resets', function (Blueprint $table) {

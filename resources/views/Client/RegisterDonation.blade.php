@@ -27,8 +27,8 @@
                         </div>
 
                         <div class="registerDonation__inputData">
-                                <input name="fecha" type="text" value="{{ $date }}" disabled/>
-                                <label>Fecha </label>
+                            <input name="fecha" type="text" value="{{ $date }}" disabled/>
+                            <label>Fecha </label>
                         </div>
 
                         <div class="registerDonation__inputData">
