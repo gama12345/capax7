@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Document;
 use App\Models\Donor;
+use Illuminate\Support\Carbon;
+use App\Models\Donation;
+
 
 class ClientController extends Controller
 {
@@ -27,8 +30,8 @@ class ClientController extends Controller
         }
     }
     public function showDonors(){
-        $donors = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->select('*')->get();
-        if(auth('client')->check()){            
+        if(auth('client')->check()){     
+            $donors = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->select('*')->get();       
             return view('Client.Donors')->with('donors',$donors);
         }else{
             return redirect()->route('main');
@@ -36,14 +39,16 @@ class ClientController extends Controller
     }    
     public function showRegisterDonation(){
         if(auth('client')->check()){
-            return view('Client.RegisterDonation');
+            $donors = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->select('id','razon_social')->get();
+            return view('Client.RegisterDonation')->with('donors',$donors)->with('date', Carbon::now()->locale('es')->isoFormat('DD MMMM YYYY'));
         }else{
             return redirect()->route('main');
         }
     }
     public function showDonations(){
         if(auth('client')->check()){
-            return view('Client.Donations');
+            $donors = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->select('*')->get();
+            return view('Client.Donations')->with('donors',$donors);
         }else{
             return redirect()->route('main');
         }
@@ -433,6 +438,34 @@ class ClientController extends Controller
         $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['domicilio'=>($request->domicilio)]);
 
         return back()->with('success','Datos actualizados');
+
+    }
+    public function registerDonation(Request $request){
+        //Validation
+        $validation = $request->validate([
+            'razon_social' => ['required', 'max:200'],
+        ],[
+            'razon_social.required' => 'Especifique la razón social o nombre',
+            'razon_social.max' => "Campo 'Razón social' no puede superar los 200 caracteres",
+        ]);
+        $donorData = DB::table('donors')->where('razon_social', $request->razon_social)->where('registrado_por', auth('client')->user()->id)->select('*')->first();
+        if($donorData != null){
+            $validation = $request->validate([
+                'cantidad' => ['required', 'regex:/^[1-9]+\d*(\.\d{1,2})*$/'],
+            ],[
+                'cantidad.required' => 'Especifique el monto del donativo',
+                'cantidad.regex' => "Especifique el monto como un número entero o máximo con 2 decimales",
+            ]);
+            $newDonation = new Donation([
+                'cantidad' => $request->cantidad,
+                'fecha' => $request->fecha,
+                'donante' => $request->id,
+            ]);
+            $newDonation->save();
+            return back()->with('success','Donación registrada');
+        }else{
+            return back()->withErrors(["Donante no registrado, para guardar el donativo registre primero al donante"]);
+        }
 
     }
 }

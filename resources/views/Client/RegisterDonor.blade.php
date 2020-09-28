@@ -16,7 +16,7 @@
         
         <div class="registerDonor__sections">
             <fieldset class="registerDonor__donorInfoSection">
-                    <legend>Información</legend>
+                    <legend>Nuevo registro</legend>
                     <form method="post" action="{{ route('registerDonor') }}">
                         @csrf
                         <div class="registerDonor__inputData">

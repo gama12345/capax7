@@ -30,6 +30,7 @@ Route::post('/donantes/nuevo/validando', [ClientController::class, 'registerDono
 Route::get('/donantes/registros', [ClientController::class, 'showDonors'])->name('showDonors');
 Route::post('/donantes/registros/validando', [ClientController::class, 'updateDonors'])->name('updateDonors');
 Route::get('/donaciones/nuevo', [ClientController::class, 'showRegisterDonation'])->name('showRegisterDonation');
+Route::post('/donaciones/nuevo/validando', [ClientController::class, 'registerDonation'])->name('registerDonation');
 Route::get('/donaciones/registros', [ClientController::class, 'showDonations'])->name('showDonations');
 Route::post('/actualizar/documento/{orgType}/{doc}', [ClientController::class, 'updateDocument'])->name('updateDocument');
 Route::post('/actualizar/informacion/administrativa', [ClientController::class, 'updateAdministrativeInformation'])->name('updateAdministrativeInformation');
