@@ -21,7 +21,7 @@
             </div>
             <div class="donorsMenu__rowMenu">
                 <button class="donorsMenu__btn btnRegisterDonation" title="Nueva donación" onclick="location.href = '{{ route('showRegisterDonation') }} '"></button>
-                <button class="donorsMenu__btn btnDonations" title="Ver donaciones" onclick="location.href = '{{ route('showDonations') }}'"></button>
+                <button class="donorsMenu__btn btnDonations" title="Ver donaciones" onclick="location.href='{{ route('showStatistics') }}'"></button>
             </div>
         </div>
     </div>

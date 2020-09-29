@@ -14,7 +14,7 @@
                     <input id="bestDonor" type="text" value="{{ $bestDonor }}" disabled/>
                     <p>Promedio mensual</p>
                     <input id="avgDonor" type="text" value="${{ number_format($monthAvg, 2) }} MXN" disabled/>   
-                    <a href="#">Ver más...</a>                 
+                    <a href="{{ route('showDetailedDonors') }}">Ver más...</a>                 
                 </div>
                 <div class="statistics__bestMonth">
                     <p>Recaudación anual</p>

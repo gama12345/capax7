@@ -72,6 +72,19 @@ class ClientController extends Controller
             return redirect()->route('main');
         }
     }
+    public function showDetailedDonors(){
+        if(auth('client')->check()){
+            $currentDate = Carbon::now();
+            $year = $currentDate->format('yy');
+            $month = $currentDate->format('m');
+            $historicDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' group by donante order by total limit 5'));
+            $anualDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-01-01" group by donante order by total limit 5'));
+            $montDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" group by donante order by total limit 5'));
+            return view('Client.StatisticsDonors')->with('historicDonors', $historicDonors)->with('anualDonors', $anualDonors)->with('monthDonors', $montDonors);
+        }else{
+            return redirect()->route('main');
+        }
+    }
 
     //Functions
     public function updateDocument(Request $request){
@@ -479,7 +492,7 @@ class ClientController extends Controller
                 'cantidad' => $request->cantidad,
                 'fecha' => Carbon::now()->isoFormat('YYYY-MM-DD'),
                 'donante' => $request->id,
-                'cliente' => auth('cliente')->user()->id
+                'cliente' => auth('client')->user()->id
             ]);
             $newDonation->save();
             return back()->with('success','Donación registrada');
