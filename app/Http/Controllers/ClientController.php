@@ -55,14 +55,19 @@ class ClientController extends Controller
     }
     public function showStatistics(){
         if(auth('client')->check()){
-            $last5Donations = DB::table('donations')->where('cliente', auth('client')->user()->id)->select('*')->orderBy('fecha','desc')->limit(5)->get();
             $donors = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->select('*')->get();       
             $currentDate = Carbon::now();
             $year = $currentDate->format('yy');
             $months = $currentDate->format('m');
-            $bestDonorID = DB::select(DB::raw('select sum(cantidad) as total, donante from donations where fecha >= "'.$year.'-01-01" and fecha <= "'.$year.'-12-31" group by donante order by total desc limit 1'));
-            $bestDonor = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->where('id',$bestDonorID[0]->donante)->select('razon_social')->first();
-            return view('Client.Statistics')->with('last5Donations',$last5Donations)->with('donors',$donors)->with('bestDonor',$bestDonor->razon_social)->with('monthAvg',($bestDonorID[0]->total)/$months);
+            $bestDonorID = DB::select(DB::raw('select sum(cantidad) as total, donante from donations where fecha >= "'.$year.'-01-01" and fecha <= "'.$year.'-12-31" and cliente = "'.auth('client')->user()->id.'" group by donante order by total desc limit 1'));
+            $bestDonor = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->where('id',$bestDonorID[0]->donante ?? '')->select('razon_social')->first();
+            $last5Donations = DB::table('donations')->where('cliente', auth('client')->user()->id)->select('*')->orderBy('fecha','desc')->limit(5)->get();
+            $anualIncome = DB::table('donations')->where('cliente', auth('client')->user()->id)->whereYear('fecha',$year)->sum('cantidad');
+            return view('Client.Statistics')->with('last5Donations',$last5Donations)
+                    ->with('donors',$donors)->with('bestDonor',$bestDonor->razon_social ?? 'Sin donaciones')
+                    ->with('monthAvg',($bestDonorID[0]->total ?? 0)/$months)
+                    ->with('anualIncome',$anualIncome)
+                    ->with('anualMonthAvg',($anualIncome/$months));
         }else{
             return redirect()->route('main');
         }

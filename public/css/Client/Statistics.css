@@ -69,22 +69,20 @@ h1{
     justify-content: center;
 }
 .statistics__bestDonor, .statistics__bestMonth{
-    border: 1px solid black;
-
     width: 90%;
     height: 46%;
     padding: 5%;
     display: flex;
     flex-direction: column;
 }
-.statistics__bestDonor p{
+.statistics__bestDonor p, .statistics__bestMonth p{
     font-size: 14px;
     font-weight: bold;
     color: rgb(22, 130, 163);
     align-self: flex-start;
     margin-bottom: 0;
 }
-.statistics__bestDonor input{
+.statistics__bestDonor input, .statistics__bestMonth input{
     height: 18%;
     border-radius: 40px;
     outline: none;
@@ -95,7 +93,7 @@ h1{
     background: white;
     box-shadow: 5px 6px 8px rgba(30, 104, 126, 0.281);   
 }
-#avgDonor{
+#avgDonor, #anual, #avgMonth{
     background: url('/Icons/money.png') no-repeat scroll 7px 7px;
     background-size: contain;
     background-position: center;
@@ -107,7 +105,7 @@ h1{
     background-position: center;
     background-position-x: 96%;
 }
-.statistics__bestDonor a{
+.statistics__bestDonor a, .statistics__bestMonth a{
     align-self: flex-end;
     margin-top: auto;
     font-size: 14px;
@@ -118,13 +116,13 @@ h1{
     }
     .statistics__averageData{
         flex-direction: row;
-        width: 76%;
-        height: 35%;
+        width: 70%;
+        height: 40%;
         justify-content: space-between;
     }
     .statistics__lastDonationsGraph{
         width: 80%;
-        height: 70%;
+        height: 60%;
         margin-right: 0%;
     }
     .statistics__bestDonor, .statistics__bestMonth{
