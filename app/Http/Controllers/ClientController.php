@@ -77,10 +77,45 @@ class ClientController extends Controller
             $currentDate = Carbon::now();
             $year = $currentDate->format('yy');
             $month = $currentDate->format('m');
-            $historicDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' group by donante order by total limit 5'));
-            $anualDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-01-01" group by donante order by total limit 5'));
-            $montDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" group by donante order by total limit 5'));
+            $historicDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' group by donante order by total desc limit 5'));
+            $anualDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-01-01" group by donante order by total desc limit 5'));
+            $montDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" group by donante order by total desc limit 5'));
             return view('Client.StatisticsDonors')->with('historicDonors', $historicDonors)->with('anualDonors', $anualDonors)->with('monthDonors', $montDonors);
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showDetailedDonations(){
+        if(auth('client')->check()){
+            $currentDate = Carbon::now();
+            $year = $currentDate->format('yy');
+            $month = $currentDate->format('m');
+            $thisYearDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.$year.'-01-01" and fecha <= "'.$year.'-12-31" and cliente = '.auth('client')->user()->id));
+            $lastYearDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.($year-1).'-01-01" and fecha <= "'.($year-1).'-12-31" and cliente = '.auth('client')->user()->id));
+            $lastLastYearDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.($year-2).'-01-01" and fecha <= "'.($year-2).'-12-31" and cliente = '.auth('client')->user()->id));
+            $thisMonthDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" and cliente = '.auth('client')->user()->id));
+            $lastMonth = $month; $lastLastMonth = $month;
+            $lastYear = $year; $lastLastYear = $year;
+            if($month == "02"){
+                $lastMonth = $month-1;
+                $lastLastMonth = "12";
+                $lastLastYear = $year-1;
+            }else if($month == "01"){
+                $lastMonth = "12";
+                $lastYear = $year-1;
+                $lastLastMonth = "11";
+                $lastLastYear = $year-1;
+            }else{
+                $lastMonth = $month-1;
+                $lastLastMonth = $month-2;
+            }
+            $lastMonthDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.$lastYear.'-'.$lastMonth.'-01" and fecha <= "'.$lastYear.'-'.$lastLastMonth.'-31" and cliente = '.auth('client')->user()->id));
+            $lastLastMonthDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.$lastLastYear.'-'.$lastLastMonth.'-01" and fecha <= "'.$lastLastYear.'-'.$lastLastMonth.'-31" and cliente = '.auth('client')->user()->id));
+
+            return view('Client.StatisticsDonations')->with('thisYearDonations',$thisYearDonations[0]->total)->with('lastYearDonations',$lastYearDonations[0]->total)->with('lastLastYearDonations',$lastLastYearDonations[0]->total)
+                                                    ->with('years',[($year-2), ($year-1), $year])
+                                                    ->with('thisMonthDonations',$thisMonthDonations[0]->total)->with('lastMonthDonations',$lastMonthDonations[0]->total)->with('lastLastMonthDonations',$lastLastMonthDonations[0]->total)
+                                                    ->with('months',[$lastLastMonth,$lastMonth,$month]);
         }else{
             return redirect()->route('main');
         }
@@ -369,7 +404,7 @@ class ClientController extends Controller
             'email' => ['required','email','unique:donors'],
             'telefono' => ['required','regex:/^[0-9]{10}/'],
             'celular' => ['nullable','regex:/^[0-9]{10}/'],
-            'domicilio' => ['required','regex:/^(Calle)\s[\w\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
+            'domicilio' => ['required','regex:/^(Calle)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
         ],
         [
             'razon_social.required' => 'Especifique la razón social o nombre',

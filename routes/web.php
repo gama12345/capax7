@@ -22,8 +22,11 @@ Route::post('/reestablecerpassword', [UserController::class, 'updatePassword'])-
 //Admin
 Route::get('/registro/cliente', [AdminController::class, 'showRegisterClient'])->name('showRegisterClient');
 Route::post('/registro/guardando', [AdminController::class, 'registerClient'])->name('registerClient');
+Route::get('/admin/estadisticas', [AdminController::class, 'showStatistics'])->name('showStatisticsAdmin');
+
 
 //Client
+Route::get('/estadisticas/donaciones', [ClientController::class, 'showDetailedDonations'])->name('showDetailedDonations');
 Route::get('/estadisticas/donantes', [ClientController::class, 'showDetailedDonors'])->name('showDetailedDonors');
 Route::get('/estadisticas', [ClientController::class, 'showStatistics'])->name('showStatistics');
 Route::get('/donantes', [ClientController::class, 'showDonorsMenu'])->name('showDonorsMenu');

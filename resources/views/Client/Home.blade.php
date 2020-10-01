@@ -161,12 +161,12 @@
                 <div id="lucrative" class="home__docSectionRow oculto">
                     <div class="home__docContainer">
                         <input type="image" id="acta_constitutiva_lucrativa" class="home__docImg" src="/Images/acta-constitutiva-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Acta Constitutiva"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $acta_constitutiva->nombre ?? '' }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $acta_constitutiva->nombre ?? 'doc-no-found.pdf' }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('acta_constitutiva_lucrativa')">Cambiar</button>                    
                     </div>
                     <div class="home__docContainer">
                         <input type="image" id="folio_reg_electronico_lucrativa" class="home__docImg" src="/Images/folio-reg-electronico-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Folio Registral Electrónico"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $folio_reg_electronico->nombre ?? '' }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $folio_reg_electronico->nombre ?? 'doc-no-found.pdf' }}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('folio_reg_electronico_lucrativa')">Cambiar</button>                    
                     </div>
                 </div>
@@ -174,34 +174,34 @@
                     <div class="home__docSectionRow" >
                         <div class="home__docContainer">
                             <input type="image" id="acta_constitutiva_no_lucrativa" class="home__docImg" src="/Images/acta-constitutiva-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Acta Constitutiva"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $acta_constitutiva->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $acta_constitutiva->nombre ?? 'doc-no-found.pdf' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('acta_constitutiva_no_lucrativa')">Cambiar</button>                    
                         </div>
                         <div class="home__docContainer">
                             <input type="image" id="folio_reg_electronico_no_lucrativa" class="home__docImg" src="/Images/folio-reg-electronico-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Folio Registral Electrónico"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $folio_reg_electronico->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $folio_reg_electronico->nombre ?? 'doc-no-found.pdf' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('folio_reg_electronico_no_lucrativa')">Cambiar</button>                    
                         </div>
                         <div class="home__docContainer">
                             <input type="image" id="autorizacion_fiscal" class="home__docImg" src="/Images/autorizacion-fiscal-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Autorización Fiscal"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $autorizacion_fiscal->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $autorizacion_fiscal->nombre ?? 'doc-no-found.pdf' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('autorizacion_fiscal')">Cambiar</button>                    
                         </div>
                     </div>
                     <div class="home__docSectionRow" >
                         <div class="home__docContainer">
                             <input type="image" id="reg_marca" class="home__docImg" src="/Images/reg-marca-logo.jpg" onclick="showModal(this.id)" data-toggle="tooltip" title="Registro de Marca"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $reg_marca->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $reg_marca->nombre ?? 'doc-no-found.pdf' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('reg_marca')">Cambiar</button>                    
                         </div>
                         <div class="home__docContainer">
                             <input type="image" id="cluni" class="home__docImg" src="/Images/cluni-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Clave Única de Inscripción al Registro de OSC"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $cluni->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $cluni->nombre ?? 'doc-no-found.pdf' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('cluni')">Cambiar</button>                    
                         </div>
                         <div class="home__docContainer">
                             <input type="image" id="multilaterales" class="home__docImg" src="/Images/multilaterales-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Multilaterales"/>
-                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $multilaterales->nombre ?? '' }}')">Ver</button>
+                            <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $multilaterales->nombre ?? 'doc-no-found.pdf' }}')">Ver</button>
                             <button class="home__btnChange" onclick="showModal('multilaterales')">Cambiar</button>                    
                         </div>
                     </div>

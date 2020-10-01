@@ -35,24 +35,9 @@
         var anualDonors = @json($anualDonors);
         var monthDonors = @json($monthDonors);
         makeGraph('Histórico');
-       /* arrayDonations.forEach(donation => {
-            for(index=0; index<arrayDonors.length; index++){
-                if(arrayDonors[index].id === donation.donante){
-                    nombre = arrayDonors[index].razon_social;
-                    if(arrayDonors[index].razon_social.length > 10){
-                        nombre = arrayDonors[index].razon_social.substring(0,10)+"...";
-                    }
-                    donantes.push(nombre);
-                    break;
-                }
-            };
-            fechas.push(donation.fecha);
-            montos.push(donation.cantidad);
-        });
-        fechas.reverse(); montos.reverse(); donantes.reverse();*/
 
         function makeGraph(type){
-            var array = []; var montos = []; var donantes = []; var text;
+            var array = []; var montos = []; var donantes = []; var fullNames = []; var text;
             if(type === "Histórico"){
                 text = "Mejores donantes histórico";
                 array = historicDonors;
@@ -65,12 +50,14 @@
             }
             array.forEach(donor => {
                     nombre = donor.razon_social;
-                    if(donor.razon_social.length > 10){
-                        nombre = donor.razon_social.substring(0,10)+"...";
+                    if(donor.razon_social.length > 15){
+                        nombre = donor.razon_social.substring(0,15)+"...";
                     }
                     donantes.push(nombre);
+                    fullNames.push(donor.razon_social);
                     montos.push(donor.total);                    
-                });
+                });            
+            fullNames.reverse(); montos.reverse(); donantes.reverse();
             //Remove old graph, create new one 
             graphic = document.getElementById('graph');
             graphic.parentNode.removeChild(graphic);

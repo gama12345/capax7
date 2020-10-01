@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Client;
 use App\Models\Document;
+use Illuminate\Support\Carbon;
 
 class AdminController extends Controller
 {
@@ -17,6 +18,22 @@ class AdminController extends Controller
     public function showRegisterClient(){
         if(auth('admin')->check()){
             return view('Admin.RegisterClient');
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showStatistics(){
+        if(auth('admin')->check()){
+            $currentDate = Carbon::now();
+            $year = $currentDate->format('yy');
+            $month = $currentDate->format('m');
+            $topDonationsClients = DB::select(DB::raw('select cliente, razon_social, sum(cantidad) as total from donations inner join clients on cliente = clients.id group by cliente order by total desc limit 5'));
+            $topAnualDonationsClients = DB::select(DB::raw('select cliente, razon_social, sum(cantidad) as total from donations inner join clients on cliente = clients.id where fecha >= "'.$year.'-01-01" and fecha <= "'.$year.'-12-31" group by cliente order by total desc limit 5'));
+            $topMonthDonationsClients = DB::select(DB::raw('select cliente, razon_social, sum(cantidad) as total from donations inner join clients on cliente = clients.id where fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" group by cliente order by total desc limit 5'));
+
+            return view('Admin.Statistics')->with('topDonationsClients',$topDonationsClients)
+                    ->with('topAnualDonationsClients',$topAnualDonationsClients)
+                    ->with('topMonthDonationsClients',$topMonthDonationsClients);
         }else{
             return redirect()->route('main');
         }
@@ -139,6 +156,8 @@ class AdminController extends Controller
         //Saving docs
         //In Folder
         Storage::disk('local')->makeDirectory('public/clients/'.$request->razon_social);
+        
+        Storage::copy('public/clients/doc-no-found.pdf','public/clients/'.$request->razon_social.'/doc-no-found.pdf');
 
         $rfc = $request->doc_rfc->getClientOriginalName();
         $request->file('doc_rfc')->storeAs('public/clients/'.$request->razon_social,$rfc);
