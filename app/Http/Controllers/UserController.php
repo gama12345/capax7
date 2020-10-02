@@ -13,8 +13,8 @@ class UserController extends Controller
 {
     //Main home
     public function showMain(Request $request){
-        $data = DB::table('admins')->where('id',1)->select('pagina_web','facebook','instagram','twitter')->get();
-        return view('main')->with('web',$data[0]->pagina_web)->with('facebook',$data[0]->facebook)->with('instagram',$data[0]->instagram)->with('twitter',$data[0]->twitter);
+        $data = DB::table('admins')->where('id',1)->select('pagina_web','facebook','instagram','twitter','logo')->get();
+        return view('main')->with('logo',$data[0]->logo)->with('web',$data[0]->pagina_web)->with('facebook',$data[0]->facebook)->with('instagram',$data[0]->instagram)->with('twitter',$data[0]->twitter);
     }
     //Login
     public function login(Request $request)

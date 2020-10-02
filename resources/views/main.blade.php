@@ -16,7 +16,7 @@
                         <ul>
                             @if($facebook)
                                 <li>
-                                    <a href="https://www.facebook.com/".{{ $facebook }}>
+                                    <a href="https://www.facebook.com/{{ $facebook }}">
                                         <span></span>
                                         <span></span>
                                         <span></span>
@@ -25,12 +25,24 @@
                                     </a>
                                 </li>
                             @endif
+                            
+                            @if($instagram)
+                                <li>
+                                    <a href="https://www.instagram.com/{{ $instagram }}">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span><img class="icon" src="{{ asset('/Icons/instagram.png') }}" alt="" title="Ir a cuenta de Instagram"/></span>
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="login__loginSection">
-                <a href="{{ $web }}"><img class="login__loginLogo" src="{{ asset('/Images/logo-transparent-black-Capax7.png') }}" alt="No se pudo cargar la imagen de inicio" title="Visitanos en nuestra página web"/></a>
+                <a href="{{ $web }}"><img class="login__loginLogo" src="/storage/admin/{{ $logo }}" alt="No se pudo cargar la imagen de inicio" title="Visitanos en nuestra página web"/></a>
                 @if($errors->has('noLogin'))
                     <div class="noLogin">{{  $errors->first('noLogin')  }}</div>
                 @endif

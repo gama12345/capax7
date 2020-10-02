@@ -146,3 +146,29 @@ input[type=file]{
     font-size: 14px;
     font-weight: 100;
   }
+  .error, .success{
+    color: white;
+    padding: 5px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    width: 50%;
+  }
+  .error{
+    background-color: rgb(255, 97, 97);
+  }
+  .success{
+    background-color: rgb(27, 141, 4);
+  }
+
+  @media all and (max-width: 900px) {    
+    .home__sections{
+        flex-direction: column;
+        align-items: center;
+    }
+    .home__adminInfoSection, .home__gralInfoSection, .home__docSection{
+        margin-bottom: 20px;
+        width: 60%;
+    }
+}

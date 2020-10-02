@@ -41,11 +41,127 @@ class AdminController extends Controller
 
     public function updateGeneralInformation(Request $request)
     {
+        $adminData = DB::table('admins')->where('id', auth('admin')->user()->id)->select('*')->first(); 
 
+        if($request->email != $adminData->email){      
+            $validation = $request->validate([
+                'email' => ['required','email','unique:admins'], 
+            ],
+            [
+                'email.required' => 'Hace falta ingresar un email',
+                'email.email' => 'Formato de email incorrecto/desconocido',
+                'email.unique' => 'Este email ya se encuentra registrado',
+            ]);   
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['email'=>($request->email)]);
+        }
+
+        if(($request->contraseña != $adminData->contraseña) && ($request->contraseña != '******')){ 
+            //Validation
+            $validation = $request->validate([
+                'contraseña' => ['required', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\ ^&\*]).{6,}$/'],
+            ],
+            [
+                'contraseña.required' => 'Hace falta ingresar una contraseña',
+                'contraseña.regex' => 'La contraseña debe ser de al menos 6 caracteres e incluir al menos un número, un caracter especial y una letra mayúscula',
+            ]);
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['contraseña'=>bcrypt($request->contraseña)]);
+        }
+
+        //Validation
+        $validation = $request->validate([
+            'telefono' => ['required','regex:/^[0-9]{10}/'],
+            'direccion' => ['required','regex:/^(Calle)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
+            'pagina_web' => ['nullable','url'],
+            'facebook' => ['nullable', 'regex:/^[A-Za-z0-9-_\.]{3,20}/'],
+            'twitter' => ['nullable', 'regex:/^[A-Za-z0-9-_\.]{3,20}/'],
+            'instagram' => ['nullable', 'regex:/^[A-Za-z0-9-_\.]{3,20}/'],
+        ],
+        [
+            'telefono.required' => 'Ingrese número de teléfono',
+            'telefono.regex' => 'Formato de teléfono desconocido, ingrese 10 digitos',
+            'direccion.required' => 'Especifique la dirección',
+            'direccion.regex' => 'Formato de dirección no válido. Ejemplo "Calle Independencia #3 Colonia Centro de la colonia C.P. 12345"',            'pagina_web.url' => 'Formato de URL (dirección web) no reconocido',
+            'facebook.regex' => 'Formato de usuario facebook incorrecto, ejemplo: www.facebook.com/ingresaEsteUsuario',
+            'twitter.regex' => 'Formato de usuario Twitter incorrecto, ejemplo: www.twitter.com/ingresaEsteUsuario',
+            'instagram.regex' => 'Formato de usuario Instagram incorrecto, ejemplo: www.instagram.com/ingresaEsteUsuario',
+        ]);
+
+        if($request->telefono != $adminData->telefono){   
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['telefono'=>($request->telefono)]);
+        }
+
+        if($request->direccion != $adminData->direccion){   
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['direccion'=>($request->direccion)]);
+        }
+
+        if($request->pagina_web != $adminData->pagina_web){   
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['pagina_web'=>($request->pagina_web)]);
+        }
+
+        if($request->facebook != $adminData->facebook){
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['facebook'=>($request->facebook)]);
+        }
+
+        if($request->twitter != $adminData->twitter){   
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['twitter'=>($request->twitter)]);
+        }
+
+        if($request->instagram != $adminData->instagram){   
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['instagram'=>($request->instagram)]);
+        }
+
+        return back()->with('success','Datos actualizados correctamente');
     }
     public function updateAdministrativeInformation(Request $request)
     {
+        $adminData = DB::table('admins')->where('id', auth('admin')->user()->id)->select('*')->first();
+        if($request->razon_social != $adminData->razon_social){
+            $validation = $request->validate([
+                'razon_social' => ['required','unique:admins', 'max:200'],
+            ],[
+                'razon_social.required' => 'Especifique la razón social o nombre',
+                'razon_social.unique' => 'Esta razón social ya se encuentra registrada',
+                'razon_social.max' => "Campo 'Razón social' no puede superar los 200 caracteres",
+            ]);
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['razon_social'=>($request->razon_social)]);
+        }
+        if($request->rfc != $adminData->rfc){
+            $validation = $request->validate([
+                'rfc' => ['required','unique:admins', 'regex:/^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([A-Z]|[0-9]){2}([A]|[0-9]){1})?$/'],
+            ],[
+                'rfc.required' => 'Especifique el RFC',
+                'rfc.unique' => 'Este RFC ya se encuentra registrado',
+                'rfc.regex' => 'Formato de RFC no reconocido, intente de nuevo',
+            ]);
+            $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['rfc'=>($request->rfc)]);
+        }
         
+        if($request->logo->getClientOriginalName() != $adminData->logo){
+            //Save new logo
+            $request->file('logo')->storeAs('public/admin', $request->logo->getClientOriginalName());
+            //Delete old logo
+            Storage::delete('/public/admin/'.$adminData->logo);
+            //Update logo name
+            $updatingLogoName = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['logo'=>($request->logo->getClientOriginalName())]);
+        }
+
+        //Validation
+        $validation = $request->validate([
+            'presidente' => ['required', 'regex:/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/'],
+            'director_ejecutivo' => ['required', 'regex:/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/'],
+
+        ],
+        [
+            'presidente.required' => 'Debe ingresar el nombre del Presidente',
+            'presidente.regex' => 'Formato de nombre del Presidente incorrecto/desconocido',
+            'director_ejecutivo.required' => 'Debe ingresar el nombre del Director ejecutivo',
+            'director_ejecutivo.regex' => 'Formato de nombre del Director ejecutivo incorrecto/desconocido',
+        ]);
+        $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['presidente'=>($request->presidente)]);
+        $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['director_ejecutivo'=>($request->director_ejecutivo)]);
+
+
+        return back()->with('success',"Datos actualizados");
     }
     public function registerClient(Request $request){
         //Validation

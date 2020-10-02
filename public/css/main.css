@@ -23,17 +23,17 @@ body,html {
 }
 .login__bannerSocialNetworks{
     position: absolute;
-    margin-top: 39%;
     display: flex;
-    align-items: flex-end;
+    bottom: 35px;
     justify-content: flex-end;
     width: 45%;
 }
 
 ul {
-    transform: rotate(-25deg) skew(25deg);
+    transform: rotate(-20deg) skew(20deg);
     transform-style: preserve-3d;
-    margin-right: 5%;  
+    display: flex;
+    flex-direction: row; 
  }
  ul li {
    position: relative;
@@ -105,13 +105,16 @@ ul {
    background: #0729e9 !important;
  }
  ul li:nth-child(2):hover span{
-   background: #5d91ff !important;
+   background: #EA6E96 !important;
  }
  ul li:nth-child(3):hover span{
-   background: #EA6E96 !important;
+   background: #5d91ff !important;
  }
  ul li:nth-child(4):hover span{
    background: #FCEB00 !important;
+ }
+ .icon{
+   width: 100%;
  }
 
 .login__loginSection{

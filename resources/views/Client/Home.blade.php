@@ -15,7 +15,7 @@
         <div class="home__sections">
             <fieldset class="home__adminInfoSection">
                 <legend>Administrativos</legend>
-                <form method="post" action="{{ route('updateAdministrativeInformation') }}">
+                <form method="post" action="{{ route('updateAdministrativeInformation') }}" autocomplete="off">
                     @csrf
                     <div class="home__inputData">
                             <input name="razon_social" type="text" value="{{ $datos->razon_social }}"/>
@@ -75,7 +75,7 @@
 
             <fieldset class="home__gralInfoSection">
                 <legend>Generales</legend>
-                <form method="post" action="{{ route('updateGeneralInformation') }}">
+                <form method="post" action="{{ route('updateGeneralInformation') }}" autocomplete="off">
                     @csrf
                     <div class="home__inputData">
                             <input name="email" type="text" value="{{ $datos->email }}"/>

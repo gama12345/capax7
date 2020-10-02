@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="home__inputData">
-                            <input name="director_ejecutivi" type="text" value="{{ $datos->director_ejecutivo }}"/>
+                            <input name="director_ejecutivo" type="text" value="{{ $datos->director_ejecutivo }}"/>
                             <label>Director Ejecutivo</label>
                     </div>
 
@@ -54,7 +54,7 @@
 
             <fieldset class="home__gralInfoSection">
                 <legend>Generales</legend>
-                <form method="post" action="{{ route('updateGeneralInformationAdmin') }}">
+                <form method="post" action="{{ route('updateGeneralInformationAdmin') }}" autocomplete="off">
                     @csrf
                     <div class="home__inputData">
                             <input name="email" type="text" value="{{ $datos->email }}"/>
