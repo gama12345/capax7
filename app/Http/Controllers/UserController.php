@@ -11,6 +11,11 @@ use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
+    //Main home
+    public function showMain(Request $request){
+        $data = DB::table('admins')->where('id',1)->select('pagina_web','facebook','instagram','twitter')->get();
+        return view('main')->with('web',$data[0]->pagina_web)->with('facebook',$data[0]->facebook)->with('instagram',$data[0]->instagram)->with('twitter',$data[0]->twitter);
+    }
     //Login
     public function login(Request $request)
     {
@@ -37,7 +42,8 @@ class UserController extends Controller
     public function goHome(Request $request)
     {
         if(auth('admin')->check()){
-            return view('admin.home');
+            $data = DB::table('admins')->where('id', auth('admin')->user()->id)->select('*')->first();
+            return view('admin.home')->with('datos',$data);
         }else if(auth('client')->check()){
             $data = DB::table('clients')->where('id', auth('client')->user()->id)->select('*')->first();
             $rfc = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo','rfc')->select('nombre')->first();

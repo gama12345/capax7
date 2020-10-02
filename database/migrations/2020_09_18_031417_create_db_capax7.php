@@ -17,6 +17,17 @@ class CreateDbCapax7 extends Migration
             $table->increments('id');
             $table->string('email');
             $table->string('contraseña');
+            $table->string('razon_social', 150);
+            $table->string('rfc', 13);
+            $table->string('direccion', 150);
+            $table->string('telefono', 20);
+            $table->string('presidente', 120);
+            $table->string('director_ejecutivo', 20);
+            $table->string('pagina_web', 150);
+            $table->string('facebook', 100);
+            $table->string('instagram', 100);
+            $table->string('twitter', 100);
+            $table->string('logo', 100);
         });
         Schema::create('clients', function (Blueprint $table) { 
             $table->increments('id');

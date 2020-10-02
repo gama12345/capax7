@@ -14,21 +14,23 @@
                 <div class="login__bannerImage">
                     <div class="login__bannerSocialNetworks">
                         <ul>
-                            <li>
-                                <a href="https://www.facebook.com/capax7consultores/">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span><img src="{{ asset('/Icons/fb.png') }}" alt="" title="Ir a perfil de Facebook"/></span>
-                                </a>
-                            </li>
+                            @if($facebook)
+                                <li>
+                                    <a href="https://www.facebook.com/".{{ $facebook }}>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span><img src="{{ asset('/Icons/fb.png') }}" alt="" title="Ir a perfil de Facebook"/></span>
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="login__loginSection">
-                <a href="https://www.capax7consultores.com/"><img class="login__loginLogo" src="{{ asset('/Images/logo-transparent-black-Capax7.png') }}" alt="No se pudo cargar la imagen de inicio" title="Visitanos en nuestra página web"/></a>
+                <a href="{{ $web }}"><img class="login__loginLogo" src="{{ asset('/Images/logo-transparent-black-Capax7.png') }}" alt="No se pudo cargar la imagen de inicio" title="Visitanos en nuestra página web"/></a>
                 @if($errors->has('noLogin'))
                     <div class="noLogin">{{  $errors->first('noLogin')  }}</div>
                 @endif

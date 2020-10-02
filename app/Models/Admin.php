@@ -13,7 +13,7 @@ class Admin extends Model
 
     //Fields
     protected $fillable = [
-        'email','contraseña'
+        'email','contraseña','razon_social','rfc','direccion','telefono','presidente','director_ejecutivo','pagina_web','facebook','instagram','twitter','logo'
     ];
     public $timestamps = false;
 

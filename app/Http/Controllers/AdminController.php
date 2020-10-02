@@ -39,6 +39,14 @@ class AdminController extends Controller
         }
     }
 
+    public function updateGeneralInformation(Request $request)
+    {
+
+    }
+    public function updateAdministrativeInformation(Request $request)
+    {
+        
+    }
     public function registerClient(Request $request){
         //Validation
         $validation = $request->validate([

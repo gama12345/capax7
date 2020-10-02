@@ -6,9 +6,7 @@ use \App\Http\Controllers\AdminController;
 use \App\Http\Controllers\ClientController;
 
 //Main
-Route::get('/', function () {
-    return view('main');
-})->name('main');
+Route::get('/', [UserController::class, 'showMain'])->name('main');
 Route::post('/iniciarSesion', [UserController::class, 'login'])->name('login');
 Route::get('/inicio/{user}', [UserController::class, 'goHome'])->name('home');
 Route::get('/salir/{user}', [UserController::class, 'logout'])->name('logout');
@@ -20,6 +18,10 @@ Route::get('/reestablecercontraseña/{token}', [UserController::class, 'showRese
 Route::post('/reestablecerpassword', [UserController::class, 'updatePassword'])->name('updatePassword');
 
 //Admin
+Route::post('/admin/actualizar/informacion/general', [AdminController::class, 'updateGeneralInformation'])->name('updateGeneralInformationAdmin');
+Route::post('/admin/actualizar/informacion/administrativa', [AdminController::class, 'updateAdministrativeInformation'])->name('updateAdministrativeInformationAdmin');
+
+
 Route::get('/registro/cliente', [AdminController::class, 'showRegisterClient'])->name('showRegisterClient');
 Route::post('/registro/guardando', [AdminController::class, 'registerClient'])->name('registerClient');
 Route::get('/admin/estadisticas', [AdminController::class, 'showStatistics'])->name('showStatisticsAdmin');
