@@ -39,7 +39,7 @@ h1{
 	-webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 900;
-	letter-spacing: 1.1rem;
+	letter-spacing: 0.8rem;
 }
 legend{
     color: #228bc7;
@@ -170,5 +170,8 @@ input[type=file]{
     .home__adminInfoSection, .home__gralInfoSection, .home__docSection{
         margin-bottom: 20px;
         width: 60%;
+    }
+    .title{
+        font-size:  10px;
     }
 }

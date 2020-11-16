@@ -39,7 +39,7 @@ h1{
 	-webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 900;
-	letter-spacing: 1.1rem;
+	letter-spacing: 0.8rem;
 }
 legend{
     color: #228bc7;
@@ -347,6 +347,9 @@ input[type=text]:focus, input[type=password]:focus, select:focus{
     .modal-btn{
         width: 80px;
         font-size: 12px;
+    }
+    .title{
+        font-size: 10px;
     }
 }
 @media all and (max-width: 700px) { 

@@ -163,6 +163,11 @@ class ClientController extends Controller
                     $updatingFileName = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo', $nameDoc)->update(['nombre'=>($request->$currentDoc->getClientOriginalName())]);
                     //Delete old file
                     Storage::delete('/public/clients'.'/'.auth('client')->user()->razon_social.'/'.$file_exists->get(0)->nombre);
+                    try {
+                        \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+                    } catch (\Exception $e) {
+                        return back()->withErrors($e->getMessage());
+                    }
                     return back()->with('success','Archivo actualizado correctamente');
                 }else{
                     //If file doesn't exist it means the orgType changed
@@ -182,6 +187,11 @@ class ClientController extends Controller
                                     'cliente' => auth('client')->user()->id
                                 ]);
                                 $newDoc->save();
+                                try {
+                                    \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+                                } catch (\Exception $e) {
+                                    return back()->withErrors($e->getMessage());
+                                }
                                 return back()->with('success','Archivo actualizado correctamente');
                             }else{
                                 return back()->withErrors(['Para subir este documento modifique su "Tipo" a "No Lucrativa"']);
@@ -194,6 +204,11 @@ class ClientController extends Controller
                             $updatingFileName = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo', $nameDoc)->update(['nombre'=>($request->$currentDoc->getClientOriginalName())]);
                             //Delete old file
                             Storage::delete('/public/clients'.'/'.auth('client')->user()->razon_social.'/'.$file_exists->get(0)->nombre);
+                            try {
+                                \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+                            } catch (\Exception $e) {
+                                return back()->withErrors($e->getMessage());
+                            }
                             return back()->with('success','Archivo actualizado correctamente');
                         }
                     }else{
@@ -320,6 +335,11 @@ class ClientController extends Controller
             $updating = DB::table('clients')->where('id', auth('client')->user()->id)->update(['ace_stps'=>($request->ace_stps)]);
         }
 
+        try {
+            \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
         return back()->with('success', "Datos actualizados. Asegurate de actualizar tus documentos adecuadamente");
     }
     public function updateGeneralInformation(Request $request){
@@ -392,6 +412,11 @@ class ClientController extends Controller
             $updating = DB::table('clients')->where('id', auth('client')->user()->id)->update(['instagram'=>($request->instagram)]);
         }
 
+        try {
+            \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
         return back()->with('success','Datos actualizados correctamente');
     }
 

@@ -110,6 +110,12 @@ class AdminController extends Controller
             $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['instagram'=>($request->instagram)]);
         }
 
+        try {
+            \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
+
         return back()->with('success','Datos actualizados correctamente');
     }
     public function updateAdministrativeInformation(Request $request)
@@ -136,13 +142,15 @@ class AdminController extends Controller
             $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['rfc'=>($request->rfc)]);
         }
         
-        if($request->logo->getClientOriginalName() != $adminData->logo){
-            //Save new logo
-            $request->file('logo')->storeAs('public/admin', $request->logo->getClientOriginalName());
-            //Delete old logo
-            Storage::delete('/public/admin/'.$adminData->logo);
-            //Update logo name
-            $updatingLogoName = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['logo'=>($request->logo->getClientOriginalName())]);
+        if($request->logo != null){
+            if($request->logo->getClientOriginalName() != $adminData->logo){
+                //Save new logo
+                $request->file('logo')->storeAs('public/admin', $request->logo->getClientOriginalName());
+                //Delete old logo
+                Storage::delete('/public/admin/'.$adminData->logo);
+                //Update logo name
+                $updatingLogoName = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['logo'=>($request->logo->getClientOriginalName())]);
+            }
         }
 
         //Validation
@@ -160,6 +168,11 @@ class AdminController extends Controller
         $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['presidente'=>($request->presidente)]);
         $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['director_ejecutivo'=>($request->director_ejecutivo)]);
 
+        try {
+            \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
 
         return back()->with('success',"Datos actualizados");
     }

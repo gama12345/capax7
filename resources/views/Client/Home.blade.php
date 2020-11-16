@@ -5,7 +5,7 @@
 @extends('Client.NavBar')
 @section('content')
     <div id="home" class="home">
-        <div class="title"><h1>MIS DATOS</h1></div>
+        <div class="title"><h1>PANEL DE CONTROL</h1></div>
         @if($errors->any())
             <div class="error">{{  $errors->first()  }}</div>
         @endif

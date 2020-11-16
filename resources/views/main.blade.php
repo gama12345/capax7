@@ -14,8 +14,19 @@
                 <div class="login__bannerImage">
                     <div class="login__bannerSocialNetworks">
                         <ul>
+                        @if($web)
+                                <li class="li-web">
+                                    <a href="{{ $web }}">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span><img src="{{ asset('/Icons/icons-website.png') }}" alt="" title="Ir a sitio web"/></span>
+                                    </a>
+                                </li>
+                            @endif
                             @if($facebook)
-                                <li>
+                                <li class="li-facebook">
                                     <a href="https://www.facebook.com/{{ $facebook }}">
                                         <span></span>
                                         <span></span>
@@ -27,7 +38,7 @@
                             @endif
                             
                             @if($instagram)
-                                <li>
+                                <li class="li-instagram">
                                     <a href="https://www.instagram.com/{{ $instagram }}">
                                         <span></span>
                                         <span></span>
