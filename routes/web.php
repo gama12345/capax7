@@ -29,8 +29,19 @@ Route::get('/admin/estadisticas', [AdminController::class, 'showStatistics'])->n
 
 //Client
 Route::get('/estadisticas/donaciones', [ClientController::class, 'showDetailedDonations'])->name('showDetailedDonations');
+Route::post('/estadisticas/donaciones/grafica', [ClientController::class, 'showDetailedDonationsMonthYear'])->name('showDetailedDonationsMonthYear');
 Route::get('/estadisticas/donantes', [ClientController::class, 'showDetailedDonors'])->name('showDetailedDonors');
+Route::post('/estadisticas/donantes/grafica', [ClientController::class, 'showDetailedDonorsMonthYear'])->name('showDetailedDonorsMonthYear');
 Route::get('/estadisticas', [ClientController::class, 'showStatistics'])->name('showStatistics');
+Route::get('/datos', [ClientController::class, 'showDataMenu'])->name('showDataMenu');
+Route::get('/ingresos/nuevo', [ClientController::class, 'showRegisterRevenue'])->name('showRegisterRevenue');
+Route::get('/ingresos/registros', [ClientController::class, 'showRevenues'])->name('showRevenues');
+Route::post('/ingresos/registros/grafica', [ClientController::class, 'showDetailedRevenuesMonthYear'])->name('showDetailedRevenuesMonthYear');
+Route::post('/ingresos/nuevo/validando', [ClientController::class, 'registerRevenue'])->name('registerRevenue');
+Route::get('/gastos/nuevo', [ClientController::class, 'showRegisterExpense'])->name('showRegisterExpense');
+Route::get('/gastos/registros', [ClientController::class, 'showExpenses'])->name('showExpenses');
+Route::post('/gastos/registros/grafica', [ClientController::class, 'showDetailedExpensesMonthYear'])->name('showDetailedExpensesMonthYear');
+Route::post('/gastos/nuevo/validando', [ClientController::class, 'registerExpense'])->name('registerExpense');
 Route::get('/donantes', [ClientController::class, 'showDonorsMenu'])->name('showDonorsMenu');
 Route::get('/donantes/nuevo', [ClientController::class, 'showRegisterDonor'])->name('showRegisterDonor');
 Route::post('/donantes/nuevo/validando', [ClientController::class, 'registerDonor'])->name('registerDonor');

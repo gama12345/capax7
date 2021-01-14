@@ -66,10 +66,25 @@ h1{
     align-items: center;
     justify-content: center;
 }
+#statisticsDonations__fechas{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+}
 .statisticsDonations__typeGraph label{
     font-size: 18px;
     font-weight: bolder;
     color: #34495e;
+}
+.btn{
+    background-color: #3a6692;
+    color: white;
+    border-radius: 10%;
+    height: 50%;
+    margin-top: 40%;
+    font-size: medium;
 }
 .select {
     position: relative;

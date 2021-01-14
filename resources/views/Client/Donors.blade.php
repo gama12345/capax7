@@ -58,12 +58,28 @@
                                 <input id="celular" name="celular" type="text" disabled value="{{ old('celular') }}"/>
                                 <label>Celular</label>
                         </div>
-
+                        <div class="donors__inputData">
+                                <input id="calle" name="calle" type="text" value="{{ old('calle') }}" placeholder="Calle..."/>
+                                <label title="Calle del domicilio">Calle *</label>
+                        </div>
+                        <div class="donors__inputData">
+                                <input id="num_calle" name="num_calle" type="text" value="{{ old('num_calle') }}" placeholder="Número de Calle..."/>
+                                <label title="Número de la calle del domicilio">Número de calle *</label>
+                        </div>
+                        <div class="donors__inputData">
+                                <input id="colonia" name="colonia" type="text" value="{{ old('colonia') }}" placeholder="Colonia..."/>
+                                <label title="Colonia del domicilio">Colonia *</label>
+                        </div>
+                        <div class="donors__inputData">
+                                <input id="codigo_postal" name="codigo_postal" type="text" value="{{ old('codigo_postal') }}" placeholder="Código postal..."/>
+                                <label title="Código postal del domicilio">Código postal *</label>
+                        </div>
+<!--
                         <div class="donors__inputData">
                                 <input id="domicilio" name="domicilio" type="text" disabled value="{{ old('domicilio') }}"/>
                                 <label title="Calle, número, colonia y código postal">Domicilio *</label>
                         </div>
-
+-->
                         <div class="donors__dataMsg">
                             * Información requerida
                         </div>
@@ -102,7 +118,10 @@
             document.getElementById('email').disabled = false;
             document.getElementById('telefono').disabled = false;
             document.getElementById('celular').disabled = false;
-            document.getElementById('domicilio').disabled = false;
+            document.getElementById('calle').disabled = false;
+            document.getElementById('num_calle').disabled = false;
+            document.getElementById('colonia').disabled = false;
+            document.getElementById('codigo_postal').disabled = false;
             document.getElementById('btnGuardar').disabled = false;
         }
         //Load autoComplete razon_social
@@ -157,7 +176,10 @@
                 document.getElementById('email').disabled = false;
                 document.getElementById('telefono').disabled = false;
                 document.getElementById('celular').disabled = false;
-                document.getElementById('domicilio').disabled = false;
+                document.getElementById('calle').disabled = false;
+                document.getElementById('num_calle').disabled = false;
+                document.getElementById('colonia').disabled = false;
+                document.getElementById('codigo_postal').disabled = false;
                 document.getElementById('btnGuardar').disabled = false;
 
                 document.getElementById("autoComplete").value = feedback.selection.value.razon_social;
@@ -167,7 +189,11 @@
                 document.getElementById('email').value = feedback.selection.value.email;
                 document.getElementById('telefono').value = feedback.selection.value.telefono;
                 document.getElementById('celular').value = feedback.selection.value.celular;
-                document.getElementById('domicilio').value = feedback.selection.value.domicilio;
+                elementosDomicilio = feedback.selection.value.domicilio.split("%.%");
+                document.getElementById('calle').value = elementosDomicilio[0];
+                document.getElementById('num_calle').value = elementosDomicilio[1];
+                document.getElementById('colonia').value = elementosDomicilio[2];
+                document.getElementById('codigo_postal').value = elementosDomicilio[3];
                 document.getElementById('id').value = feedback.selection.value.id;
             }             
         });

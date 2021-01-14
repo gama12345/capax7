@@ -28,13 +28,14 @@
 
                     <div class="home__inputData">
                             <input name="presidente" type="text" value="{{ $datos->presidente }}"/>
-                            <label>Presidente</label>
+                            <label>Presidente/Director ejecutivo</label>
                     </div>
 
+                    <!--
                     <div class="home__inputData">
-                            <input name="director_ejecutivo" type="text" value="{{ $datos->director_ejecutivo }}"/>
+                            <input name="director_ejecutivo" type="text" value=""/>
                             <label>Director Ejecutivo</label>
-                    </div>
+                    </div>-->
 
                     <div class="home__inputData">
                         <p>Cambiar logo</p>

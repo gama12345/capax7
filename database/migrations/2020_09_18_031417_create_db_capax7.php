@@ -22,7 +22,6 @@ class CreateDbCapax7 extends Migration
             $table->string('direccion', 150);
             $table->string('telefono', 20);
             $table->string('presidente', 120);
-            $table->string('director_ejecutivo', 20);
             $table->string('pagina_web', 150);
             $table->string('facebook', 100);
             $table->string('instagram', 100);
@@ -34,6 +33,8 @@ class CreateDbCapax7 extends Migration
             $table->increments('id');
             $table->string('razon_social');
             $table->string('rfc', 13);
+            $table->string('ciudad');
+            $table->string('estado');
             $table->string('email');
             $table->string('contraseña')->default("capax7");
             $table->string('telefono', 20);
@@ -45,9 +46,12 @@ class CreateDbCapax7 extends Migration
             $table->string('tipo_persona', 6);
             $table->string('es_lucrativa', 2)->nullable();
             $table->string('r_legal');
+            $table->string('banco');
             $table->string('cta_bancaria');
-            $table->string('imss');
-            $table->string('ace_stps');
+            $table->string('clave_interbancaria');
+            $table->string('imss')->nullable();
+            $table->string('ace_stps')->nullable();
+            $table->string('registrado_en', 4);
         });
         Schema::create('documents', function (Blueprint $table){
             $table->increments('id');	
@@ -75,6 +79,22 @@ class CreateDbCapax7 extends Migration
             $table->date('fecha');	
             $table->integer('donante')->unsigned();
             $table->foreign('donante')->references('id')->on('donors')->onDelete('cascade');  
+            $table->integer('cliente')->unsigned();             
+            $table->foreign('cliente')->references('id')->on('clients')->onDelete('cascade'); 
+        });
+        Schema::create('revenues', function (Blueprint $table){
+            $table->increments('id');
+            $table->string('concepto', 100);
+            $table->float('cantidad', 8, 2);	
+            $table->date('fecha');	
+            $table->integer('cliente')->unsigned();             
+            $table->foreign('cliente')->references('id')->on('clients')->onDelete('cascade'); 
+        });
+        Schema::create('expenses', function (Blueprint $table){
+            $table->increments('id');
+            $table->string('concepto', 100);
+            $table->float('cantidad', 8, 2);	
+            $table->date('fecha');	
             $table->integer('cliente')->unsigned();             
             $table->foreign('cliente')->references('id')->on('clients')->onDelete('cascade'); 
         });

@@ -12,11 +12,11 @@
                 <p id="pTitle">Mayores ingresos en donativos</p>
                 <div class="statistics__clients">
                     <p>Histórico</p>
-                    <input type="text" value=" {{ $topDonationsClients[0]->razon_social }}" disabled/>
+                    <input type="text" value=" {{ $topDonationsClients[0]->razon_social ?? 'No hay donaciones registradas'}}" disabled/>
                     <p>Año</p>
-                    <input type="text" value="{{ $topAnualDonationsClients[0]->razon_social }}" disabled/>   
+                    <input type="text" value="{{ $topAnualDonationsClients[0]->razon_social ?? 'No hay donaciones registradas'}}" disabled/>   
                     <p>Mes</p>
-                    <input type="text" value="{{ $topMonthDonationsClients[0]->razon_social }}" disabled/>                  
+                    <input type="text" value="{{ $topMonthDonationsClients[0]->razon_social ?? 'No hay donaciones registradas'}}" disabled/>                  
                 </div>
             </div>
 

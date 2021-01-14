@@ -1,16 +1,17 @@
 <head>
     <title>Capax7 - Estadísticas</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/Client/statisticsDonors.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/Client/statisticsDonations.css') }}">
 </head>
 @extends('Client.NavBar')
 @section('content')
-    <div id="statisticsDonors" class="statisticsDonors">
-        <div class="title"><h1>ESTADÍSTICAS</h1></div>
+    <div id="statisticsDonations" class="statisticsDonations">
+        <div class="title"><h1>INGRESOS</h1></div>
 
-        <div class="statisticsDonors__container">
-            <div id="statisticsDonors__fechas">
-                <div class="statisticsDonors__typeGraph">
+        <div class="statisticsDonations__container">
+        
+        <div id="statisticsDonations__fechas">
+                <div class="statisticsDonations__typeGraph">
                     <label for="years" >Año:</label>
                     <div class="select">
                         <select id="years" onchange="setYear()" >
@@ -18,7 +19,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="statisticsDonors__typeGraph">
+                <div class="statisticsDonations__typeGraph">
                     <label for="months" >Mes:</label>
                     <div class="select">
                         <select id="months" onchange="setMonth()">
@@ -37,15 +38,15 @@
                         </select>
                     </div>
                 </div>
-                <form method="post" action="{{ route('showDetailedDonorsMonthYear') }}">
+                <form method="post" action="{{ route('showDetailedRevenuesMonthYear') }}">
                 @csrf
-                <input id="mes" name="month" hidden/>
-                <input id="año" name="year" hidden/>
-                <button class="btn" type="submit">Ver gráfico</button>
+                    <input id="mes" name="month" hidden/>
+                    <input id="año" name="year" hidden/>
+                    <button class="btn" type="submit">Ver gráfico</button>
                 </form>
             </div>
 
-            <div id="parentGraph" class="statisticsDonors__donorsGraph">
+            <div id="parentGraph" class="statisticsDonations__donorsGraph">
                 <canvas id="graph"></canvas>
             </div>
         </div>
@@ -54,50 +55,32 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
         window.onload = function() {
-            document.getElementById('statisticsDonors').className += " slideEffect";
+            document.getElementById('statisticsDonations').className += " slideEffect";
         }
-        
-        var añoRegistro = parseInt(@json($year));
-        var añoActual = parseInt(@json($currentYear));
-        var mesActual = @json($currentMonth);
-        var donaciones = @json($donaciones);
-        var mesSeleccionado = @json($selectedMonth);
-        var añoSeleccionado = @json($selectedYear);
-
-        document.getElementById('months').value = mesActual;
+        var ingresos = @json($ingresos);
+        var añoRegistro = @json($añoRegistro);
+        var añoActual = @json($añoActual);
+        var mesSeleccionado = @json($mesSeleccionado);
+        var añoSeleccionado = @json($añoSeleccionado);
         while(añoActual >= añoRegistro){
             document.getElementById('years').innerHTML += "<option>"+añoActual+"</option>";
             añoActual--;
         }
-
-        if(donaciones != ""){
-            makeGraph();
+        var montos = [];
+        for(i=0; i<ingresos.length; i++){
+            montos.push(ingresos[i].total);
         }
-        
         if(mesSeleccionado != "" && añoSeleccionado != ""){
             document.getElementById("months").value = mesSeleccionado;
             document.getElementById("years").value = añoSeleccionado;
         }
         document.getElementById("mes").value = document.getElementById("months").value;
         document.getElementById("año").value = document.getElementById("years").value;
-        
-        
+        makeGraph();
 
         function makeGraph(){
-            array = donaciones;
-            donantes = new Array();
-            fullNames = new Array();
-            montos = new Array();
-            array.forEach(donor => {
-                    nombre = donor.razon_social;
-                    if(donor.razon_social.length > 15){
-                        nombre = donor.razon_social.substring(0,15)+"...";
-                    }
-                    donantes.push(nombre);
-                    fullNames.push(donor.razon_social);
-                    montos.push(donor.total);                    
-                });            
-            fullNames.reverse(); montos.reverse(); donantes.reverse();
+            var xAxis = [];  var text;
+            xAxis.push(setLanguageMonths(mesSeleccionado)); 
             //Remove old graph, create new one 
             graphic = document.getElementById('graph');
             graphic.parentNode.removeChild(graphic);
@@ -107,13 +90,13 @@
             parent.appendChild(newGraphic);
             var ctx = document.getElementById('graph').getContext('2d');
             var chart = new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: donantes,
+                    labels: xAxis,
                     datasets: [{
-                        label: "Donaciones",
-                        backgroundColor: ['rgb(49, 179, 218)'],
-                        borderColor: 'rgb(49, 179, 218)',
+                        label: "Ingresos",
+                        backgroundColor: ['rgb(49, 179, 218)','rgb(19, 48, 212)','rgb(19, 212, 138)'],
+                        borderColor: ['rgb(49, 179, 218)','rgb(19, 48, 212)','rgb(19, 212, 138)'],
                         borderWidth: 2,
                         data: montos,
                         fill: false,
@@ -124,7 +107,7 @@
                     title: {
                         fontSize: 15,
                         display: true,
-                        text: "Mejores donadores"
+                        text: "Ingresos registrados en "+xAxis[0]+" "+añoSeleccionado
                     },
                     tooltips: {
                         callbacks: {
@@ -141,13 +124,57 @@
                 }
             });
         }
+
         function setMonth(){
             document.getElementById("mes").value = document.getElementById("months").value;
         }
         function setYear(){
             document.getElementById("año").value = document.getElementById("years").value;
         }
-            
+        function setLanguageMonths(month){
+                switch(month){
+                    case 1: case "01":
+                        return "Enero";
+                    break;
+                    case 2: case "02":
+                        return "Febrero";
+                    break;
+                    case 3: case "03":
+                        return "Marzo";
+                    break;
+                    case 4: case "04":
+                        return "Abril";
+                    break;
+                    case 5: case "05":
+                        return "Mayo";
+                    break;
+                    case 6: case "06":
+                        return "Junio";
+                    break;
+                    case 7: case "07":
+                        return "Julio";
+                    break;
+                    case 8: case "08":
+                        return "Agosto";
+                    break;
+                    case 9: case "09":
+                        return "Septiembre";
+                    break;
+                    case 10: case "10":
+                        return "Octubre";
+                    break;
+                    case 11: case "11":
+                        return "Noviembre";
+                    break;
+                    case 12: case "12":
+                        return "Diciembre";
+                    break;
+                    default:
+                        return month;
+                    break;
+                }
+                return "";
+        }
     </script>
 
 @endsection

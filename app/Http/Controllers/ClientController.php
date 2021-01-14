@@ -10,14 +10,28 @@ use App\Models\Document;
 use App\Models\Donor;
 use Illuminate\Support\Carbon;
 use App\Models\Donation;
+use App\Models\Revenue;
+use App\Models\Expense;
 
 
 class ClientController extends Controller
 {
+    //This fix an laravel error with PHP 8
+    public function callAction($method, $parameters)
+    {
+        return parent::callAction($method, array_values($parameters));
+    }
     //Views
     public function showDonorsMenu(){
         if(auth('client')->check()){
             return view('Client.DonorsMenu');
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showDataMenu(){
+        if(auth('client')->check()){
+            return view('Client.DataMenu');
         }else{
             return redirect()->route('main');
         }
@@ -57,7 +71,7 @@ class ClientController extends Controller
         if(auth('client')->check()){
             $donors = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->select('*')->get();       
             $currentDate = Carbon::now();
-            $year = $currentDate->format('yy');
+            $year = $currentDate->format('Y');
             $months = $currentDate->format('m');
             $bestDonorID = DB::select(DB::raw('select sum(cantidad) as total, donante from donations where fecha >= "'.$year.'-01-01" and fecha <= "'.$year.'-12-31" and cliente = "'.auth('client')->user()->id.'" group by donante order by total desc limit 1'));
             $bestDonor = DB::table('donors')->where('registrado_por', auth('client')->user()->id)->where('id',$bestDonorID[0]->donante ?? '')->select('razon_social')->first();
@@ -75,12 +89,32 @@ class ClientController extends Controller
     public function showDetailedDonors(){
         if(auth('client')->check()){
             $currentDate = Carbon::now();
-            $year = $currentDate->format('yy');
+            $year = $currentDate->format('Y');
             $month = $currentDate->format('m');
+            $registrado_en = DB::table('clients')->where('id', auth('client')->user()->id)->select('registrado_en')->get();
+            $donaciones = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" group by donante order by total desc limit 5'));;
+            return view('Client.StatisticsDonors')->with('year', $registrado_en[0]->registrado_en)->with('donaciones', $donaciones)->with('currentYear',$year)->with('currentMonth',$month)->with('selectedYear', "")->with('selectedMonth', "");;
+            /*
             $historicDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' group by donante order by total desc limit 5'));
             $anualDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-01-01" group by donante order by total desc limit 5'));
             $montDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" group by donante order by total desc limit 5'));
             return view('Client.StatisticsDonors')->with('historicDonors', $historicDonors)->with('anualDonors', $anualDonors)->with('monthDonors', $montDonors);
+            */
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showDetailedDonorsMonthYear(Request $request){
+        if(auth('client')->check()){
+            $year = $request->year;
+            $month = $request->month;
+            $currentDate = Carbon::now();
+            $currentYear = $currentDate->format('Y');
+            $currentMonth = $currentDate->format('m');
+            $registrado_en = DB::table('clients')->where('id', auth('client')->user()->id)->select('registrado_en')->get();
+            $montDonors = DB::select(DB::raw('select fecha, donante, razon_social, sum(cantidad) as total from donations inner join donors on donante = donors.id where cliente = '.auth('client')->user()->id.' and fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" group by donante order by total desc limit 5'));
+            return view('Client.StatisticsDonors')->with('donaciones', $montDonors)->with('year', $registrado_en[0]->registrado_en)->with('currentYear',$currentYear)->with('currentMonth',$currentMonth)->with('selectedYear', $year)->with('selectedMonth', $month);
+            
         }else{
             return redirect()->route('main');
         }
@@ -88,8 +122,13 @@ class ClientController extends Controller
     public function showDetailedDonations(){
         if(auth('client')->check()){
             $currentDate = Carbon::now();
-            $year = $currentDate->format('yy');
+            $year = $currentDate->format('Y');
             $month = $currentDate->format('m');
+            $registrado_en = DB::table('clients')->where('id', auth('client')->user()->id)->select('registrado_en')->get();
+            $donaciones = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" and cliente = '.auth('client')->user()->id));
+            return view('Client.StatisticsDonations')->with('donaciones', $donaciones)->with('añoActual', $year)->with('añoRegistro',  $registrado_en[0]->registrado_en)->with('añoSeleccionado', $year)->with('mesSeleccionado',$month);
+
+            /*
             $thisYearDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.$year.'-01-01" and fecha <= "'.$year.'-12-31" and cliente = '.auth('client')->user()->id));
             $lastYearDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.($year-1).'-01-01" and fecha <= "'.($year-1).'-12-31" and cliente = '.auth('client')->user()->id));
             $lastLastYearDonations = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.($year-2).'-01-01" and fecha <= "'.($year-2).'-12-31" and cliente = '.auth('client')->user()->id));
@@ -116,11 +155,100 @@ class ClientController extends Controller
                                                     ->with('years',[($year-2), ($year-1), $year])
                                                     ->with('thisMonthDonations',$thisMonthDonations[0]->total)->with('lastMonthDonations',$lastMonthDonations[0]->total)->with('lastLastMonthDonations',$lastLastMonthDonations[0]->total)
                                                     ->with('months',[$lastLastMonth,$lastMonth,$month]);
+                                                    */
         }else{
             return redirect()->route('main');
         }
     }
+    public function showDetailedDonationsMonthYear(Request $request){
+        if(auth('client')->check()){
+            $currentDate = Carbon::now();
+            $currentYear = $currentDate->format('Y');
+            //$currentMonth = $currentDate->format('m');
+            $year = $request->year;
+            $month = $request->month;
 
+            $registrado_en = DB::table('clients')->where('id', auth('client')->user()->id)->select('registrado_en')->get();
+            $donaciones = DB::select(DB::raw('select sum(cantidad) as total from donations where fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" and cliente = '.auth('client')->user()->id));
+            return view('Client.StatisticsDonations')->with('donaciones', $donaciones)->with('añoActual', $currentYear)->with('añoRegistro',  $registrado_en[0]->registrado_en)->with('añoSeleccionado', $year)->with('mesSeleccionado',$month);
+
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showRegisterRevenue(){
+        if(auth('client')->check()){
+            return view('Client.RegisterRevenue')->with('date', Carbon::now()->locale('es')->isoFormat('DD MMMM YYYY'));
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showRegisterExpense(){
+        if(auth('client')->check()){
+            return view('Client.RegisterExpense')->with('date', Carbon::now()->locale('es')->isoFormat('DD MMMM YYYY'));
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showRevenues(){
+        if(auth('client')->check()){
+            $currentDate = Carbon::now();
+            $year = $currentDate->format('Y');
+            $month = $currentDate->format('m');
+            $registrado_en = DB::table('clients')->where('id', auth('client')->user()->id)->select('registrado_en')->get();
+            $ingresos = DB::select(DB::raw('select sum(cantidad) as total from revenues where fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" and cliente = '.auth('client')->user()->id));
+            return view('Client.StatisticsRevenues')->with('ingresos', $ingresos)->with('añoActual', $year)->with('añoRegistro',  $registrado_en[0]->registrado_en)->with('añoSeleccionado', $year)->with('mesSeleccionado',$month);
+
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showDetailedRevenuesMonthYear(Request $request){
+        if(auth('client')->check()){
+            $currentDate = Carbon::now();
+            $currentYear = $currentDate->format('Y');
+            //$currentMonth = $currentDate->format('m');
+            $year = $request->year;
+            $month = $request->month;
+
+            $registrado_en = DB::table('clients')->where('id', auth('client')->user()->id)->select('registrado_en')->get();
+            $donaciones = DB::select(DB::raw('select sum(cantidad) as total from revenues where fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" and cliente = '.auth('client')->user()->id));
+            return view('Client.StatisticsRevenues')->with('ingresos', $donaciones)->with('añoActual', $currentYear)->with('añoRegistro',  $registrado_en[0]->registrado_en)->with('añoSeleccionado', $year)->with('mesSeleccionado',$month);
+
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    
+    public function showExpenses(){
+        if(auth('client')->check()){
+            $currentDate = Carbon::now();
+            $year = $currentDate->format('Y');
+            $month = $currentDate->format('m');
+            $registrado_en = DB::table('clients')->where('id', auth('client')->user()->id)->select('registrado_en')->get();
+            $ingresos = DB::select(DB::raw('select sum(cantidad) as total from expenses where fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" and cliente = '.auth('client')->user()->id));
+            return view('Client.StatisticsExpenses')->with('gastos', $ingresos)->with('añoActual', $year)->with('añoRegistro',  $registrado_en[0]->registrado_en)->with('añoSeleccionado', $year)->with('mesSeleccionado',$month);
+
+        }else{
+            return redirect()->route('main');
+        }
+    }
+    public function showDetailedExpensesMonthYear(Request $request){
+        if(auth('client')->check()){
+            $currentDate = Carbon::now();
+            $currentYear = $currentDate->format('Y');
+            //$currentMonth = $currentDate->format('m');
+            $year = $request->year;
+            $month = $request->month;
+
+            $registrado_en = DB::table('clients')->where('id', auth('client')->user()->id)->select('registrado_en')->get();
+            $donaciones = DB::select(DB::raw('select sum(cantidad) as total from expenses where fecha >= "'.$year.'-'.$month.'-01" and fecha <= "'.$year.'-'.$month.'-31" and cliente = '.auth('client')->user()->id));
+            return view('Client.StatisticsExpenses')->with('gastos', $donaciones)->with('añoActual', $currentYear)->with('añoRegistro',  $registrado_en[0]->registrado_en)->with('añoSeleccionado', $year)->with('mesSeleccionado',$month);
+
+        }else{
+            return redirect()->route('main');
+        }
+    }
     //Functions
     public function updateDocument(Request $request){
         $currentDoc = 'doc_'.$request->doc;
@@ -155,22 +283,32 @@ class ClientController extends Controller
                 }
                 //Verify if there's a file already in system
                 $file_exists = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo', $nameDoc)->select('nombre')->get();
-                if(!$file_exists->isEmpty()){                
+                if(!$file_exists->isEmpty() || $request->doc == 'rfc' || $request->doc == 'r_legal' || $request->doc == 'cta_bancaria' || $request->doc == 'imss' || $request->doc == 'ace_stps'){                
                     //Save new file
                     $newDoc = $request->$currentDoc->getClientOriginalName();
                     $request->file($currentDoc)->storeAs('public/clients/'.auth('client')->user()->razon_social,$newDoc);
-                    //Update file name
-                    $updatingFileName = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo', $nameDoc)->update(['nombre'=>($request->$currentDoc->getClientOriginalName())]);
-                    //Delete old file
-                    Storage::delete('/public/clients'.'/'.auth('client')->user()->razon_social.'/'.$file_exists->get(0)->nombre);
+
+                    if($request->doc == 'rfc' || $request->doc == 'r_legal' || $request->doc == 'cta_bancaria' || $request->doc == 'imss' || $request->doc == 'ace_stps'){
+                        $newDoc = new Document([
+                            'tipo' => $request->doc,
+                            'nombre' => $newDoc,
+                            'cliente' => auth('client')->user()->id
+                        ]);
+                        $newDoc->save();
+                    }else{
+                        //Update file name
+                        $updatingFileName = DB::table('documents')->where('cliente', auth('client')->user()->id)->where('tipo', $nameDoc)->update(['nombre'=>($request->$currentDoc->getClientOriginalName())]);
+                        //Delete old file
+                        Storage::delete('/public/clients'.'/'.auth('client')->user()->razon_social.'/'.$file_exists->get(0)->nombre);
+                    }
                     try {
-                        \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+                        \Mail::to(auth('client')->user()->email)->send(new \App\Mail\InformationChangesMade());
                     } catch (\Exception $e) {
                         return back()->withErrors($e->getMessage());
                     }
                     return back()->with('success','Archivo actualizado correctamente');
                 }else{
-                    //If file doesn't exist it means the orgType changed
+                    //If file doesn't exist it means the orgType changed or that the file hasn't been added
                     $currentTypeOrg = DB::table('clients')->where('id', auth('client')->user()->id)->select('tipo_persona')->first();
                     if($request->orgType == $currentTypeOrg->tipo_persona){
                         //Special cases
@@ -188,7 +326,7 @@ class ClientController extends Controller
                                 ]);
                                 $newDoc->save();
                                 try {
-                                    \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+                                    \Mail::to(auth('client')->user()->email)->send(new \App\Mail\InformationChangesMade());
                                 } catch (\Exception $e) {
                                     return back()->withErrors($e->getMessage());
                                 }
@@ -205,7 +343,7 @@ class ClientController extends Controller
                             //Delete old file
                             Storage::delete('/public/clients'.'/'.auth('client')->user()->razon_social.'/'.$file_exists->get(0)->nombre);
                             try {
-                                \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+                                \Mail::to(auth('client')->user()->email)->send(new \App\Mail\InformationChangesMade());
                             } catch (\Exception $e) {
                                 return back()->withErrors($e->getMessage());
                             }
@@ -336,7 +474,7 @@ class ClientController extends Controller
         }
 
         try {
-            \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+            \Mail::to(auth('client')->user()->email)->send(new \App\Mail\InformationChangesMade());
         } catch (\Exception $e) {
             return back()->withErrors($e->getMessage());
         }
@@ -413,7 +551,7 @@ class ClientController extends Controller
         }
 
         try {
-            \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
+            \Mail::to(auth('client')->user()->email)->send(new \App\Mail\InformationChangesMade());
         } catch (\Exception $e) {
             return back()->withErrors($e->getMessage());
         }
@@ -429,7 +567,12 @@ class ClientController extends Controller
             'email' => ['required','email','unique:donors'],
             'telefono' => ['required','regex:/^[0-9]{10}/'],
             'celular' => ['nullable','regex:/^[0-9]{10}/'],
-            'domicilio' => ['required','regex:/^(Calle)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
+            'celular' => ['nullable','regex:/^[0-9]{10}/'],
+            'calle' => ['required', 'max:100'],
+            'num_calle' => ['required', 'max:2'],
+            'colonia' => ['required', 'max:100'],
+            'codigo_postal' => ['required', 'max:5'],
+            //'domicilio' => ['required','regex:/^(Calle)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
         ],
         [
             'razon_social.required' => 'Especifique la razón social o nombre',
@@ -446,8 +589,14 @@ class ClientController extends Controller
             'telefono.required' => 'Ingrese número de teléfono',
             'telefono.regex' => 'Formato de teléfono desconocido, ingrese 10 digitos',
             'celular.regex' => 'Formato de celular desconocido, ingrese 10 digitos',
-            'domicilio.required' => 'Especifique la dirección',
-            'domicilio.regex' => 'Formato de dirección no válido. Ejemplo "Calle Independencia #3 Colonia Centro de la colonia C.P. 12345"',
+            'calle.required' => 'Especifique la calle',
+            'calle.max' => 'El campo "Calle" no puede superar los 100 caracteres',
+            'num_calle.required' => 'Especifique el número de la calle o coloque "SN"',
+            'num_calle.max' => 'El campo "Número" no puede superar los 2 caracteres',
+            'colonia.required' => 'Especifique la colonia',
+            'colonia.max' => 'El campo "Colonia" no puede superar los 100 caracteres',
+            'codigo_postal.required' => 'Especifique el código postal',
+            'codigo_postal.max' => 'El campo "Código Postal" no puede superar los 5 caracteres',
         ]);
         $newDonor = new Donor([
             'razon_social' => $request->razon_social,
@@ -457,7 +606,7 @@ class ClientController extends Controller
             'email' => $request->email,
             'telefono' => $request->telefono,
             'celular' => $request->celular,
-            'domicilio' => $request->domicilio,
+            'domicilio' => $request->calle."%.%".$request->num_calle."%.%".$request->colonia."%.%".$request->codigo_postal,
             'registrado_por' => auth('client')->user()->id,
         ]);
         $newDonor->save();
@@ -511,7 +660,11 @@ class ClientController extends Controller
             'nacionalidad' => ['required','regex:/^[A-Za-zÁÉÍÓÚáéíóú]{4,100}/'],
             'telefono' => ['required','regex:/^[0-9]{10}/'],
             'celular' => ['nullable','regex:/^[0-9]{10}/'],
-            'domicilio' => ['required','regex:/^(Calle)\s[\w\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
+            'calle' => ['required', 'max:100'],
+            'num_calle' => ['required', 'max:2'],
+            'colonia' => ['required', 'max:100'],
+            'codigo_postal' => ['required', 'max:5'],
+            //'domicilio' => ['required','regex:/^(Calle)\s[\w\s\.]{1,30}(\s\#\d{0,3}\s){0,1}(Colonia)\s[\wÁÉÍÓÚáéíóú\s\.]{1,30}(C)\.(P)\.\s[\d]{5}$/'],
         ],
         [
             'nacionalidad.required' => 'Campo "Nacionalidad" requerido',
@@ -519,15 +672,23 @@ class ClientController extends Controller
             'telefono.required' => 'Ingrese número de teléfono',
             'telefono.regex' => 'Formato de teléfono desconocido, ingrese 10 digitos',
             'celular.regex' => 'Formato de celular desconocido, ingrese 10 digitos',
-            'domicilio.required' => 'Especifique la dirección',
-            'domicilio.regex' => 'Formato de dirección no válido. Ejemplo "Calle Independencia #3 Colonia Centro de la colonia C.P. 12345"',
+            'calle.required' => 'Especifique la calle',
+            'calle.max' => 'El campo "Calle" no puede superar los 100 caracteres',
+            'num_calle.required' => 'Especifique el número de la calle o coloque "SN"',
+            'num_calle.max' => 'El campo "Número" no puede superar los 2 caracteres',
+            'colonia.required' => 'Especifique la colonia',
+            'colonia.max' => 'El campo "Colonia" no puede superar los 100 caracteres',
+            'codigo_postal.required' => 'Especifique el código postal',
+            'codigo_postal.max' => 'El campo "Código Postal" no puede superar los 5 caracteres',
+            //'domicilio.required' => 'Especifique la dirección',
+            //'domicilio.regex' => 'Formato de dirección no válido. Ejemplo "Calle Independencia #3 Colonia Centro de la colonia C.P. 12345"',
         ]);
         //Updating
         $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['tipo_persona'=>($request->tipo_persona)]);
         $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['nacionalidad'=>($request->nacionalidad)]);
         $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['telefono'=>($request->telefono)]);
         $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['celular'=>($request->celular)]);
-        $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['domicilio'=>($request->domicilio)]);
+        $updating = DB::table('donors')->where('id', $request->id)->where('registrado_por', auth('client')->user()->id)->update(['domicilio'=>($request->calle."%.%".$request->num_calle."%.%".$request->colonia."%.%".$request->codigo_postal)]);
 
         return back()->with('success','Datos actualizados');
 
@@ -559,6 +720,60 @@ class ClientController extends Controller
         }else{
             return back()->withErrors(["Donante no registrado, para guardar el donativo registre primero al donante"]);
         }
+
+    }
+    public function registerRevenue(Request $request){
+        //Validation
+        $validation = $request->validate([
+            'concepto' => ['required', 'min:20','max:100'],
+        ],[
+            'concepto.required' => 'Especifique el concepto de ingreso',
+            'concepto.min' => "Campo 'Concepto' debe tener al menos 20 caracteres",
+            'concepto.max' => "Campo 'Concepto' no puede superar los 100 caracteres",
+        ]);
+        
+        $validation = $request->validate([
+            'cantidad' => ['required', 'regex:/^[1-9]+\d*(\.\d{1,2})*$/'],
+        ],[
+            'cantidad.required' => 'Especifique el monto del ingreso',
+            'cantidad.regex' => "Especifique el monto como un número entero o máximo con 2 decimales",
+        ]);
+        $new = new Revenue([
+            'concepto' => $request->concepto,
+            'cantidad' => $request->cantidad,
+            'fecha' => Carbon::now()->isoFormat('YYYY-MM-DD'),
+            'cliente' => auth('client')->user()->id
+        ]);
+        $new->save();
+        return back()->with('success','Ingreso registrado');
+            
+
+    }
+    public function registerExpense(Request $request){
+        //Validation
+        $validation = $request->validate([
+            'concepto' => ['required', 'min:20','max:100'],
+        ],[
+            'concepto.required' => 'Especifique el concepto del gasto',
+            'concepto.min' => "Campo 'Concepto' debe tener al menos 20 caracteres",
+            'concepto.max' => "Campo 'Concepto' no puede superar los 100 caracteres",
+        ]);
+        
+        $validation = $request->validate([
+            'cantidad' => ['required', 'regex:/^[1-9]+\d*(\.\d{1,2})*$/'],
+        ],[
+            'cantidad.required' => 'Especifique el monto del gasto',
+            'cantidad.regex' => "Especifique el monto como un número entero o máximo con 2 decimales",
+        ]);
+        $new = new Expense([
+            'concepto' => $request->concepto,
+            'cantidad' => $request->cantidad,
+            'fecha' => Carbon::now()->isoFormat('YYYY-MM-DD'),
+            'cliente' => auth('client')->user()->id
+        ]);
+        $new->save();
+        return back()->with('success','Gasto registrado');
+            
 
     }
 }

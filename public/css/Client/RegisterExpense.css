@@ -1,0 +1,173 @@
+.registerExpense{
+	margin-top: -0.2%;
+	margin-left: 0%;
+	opacity: 0.5;
+    height: 100vh;
+    width: 95%;
+    position: absolute;
+    top: 0;
+	left: 0;
+    transition: all ease-in .5s;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: Montserrat, sans-serif;
+} 
+.slideEffect{
+	margin-top: 0;
+	margin-left: 5%;
+	opacity: 1;
+}
+
+.title{
+    width: 100%;
+    margin-top: 0%;
+    height: 10%;
+    background-size: cover;
+    background-image: url('/Images/client-data-banner.jpg');
+    opacity: 0.7;
+    background-position: center;
+    display: flex;    
+    align-items: center;
+    justify-content: center;
+}
+h1{
+    background: linear-gradient(to right, #2ab6b6 0%, #bd8712 100%);
+    background-clip: text;
+	-webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+	letter-spacing: 1rem;
+}
+
+.registerExpense__sections{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.registerExpense__donorInfoSection{
+    border: 1px solid #228bc7;
+    border-radius: 8px;
+    padding: 20px;
+    width: 40%;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+}
+legend{
+    color: #228bc7;
+    font-weight: bold;
+}
+input[type=text], select{
+    width: 100%;
+    outline: none;	
+    border: 1px solid #228bc7;
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+input[type=text]:focus, select:focus{
+    background-color: #228ac72a;
+}
+select{
+    width: 50%;
+}
+.registerExpense__inputData{
+    position: relative;
+    margin-bottom: 20px;
+}
+.registerExpense__dataMsg{
+    font-size: 12px;
+    font-style: italic;
+    color: red;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+.registerExpense__inputData label{
+    color: #1e70a0;
+    position: absolute;
+    top: -15px;
+    left: 0;
+    font-size: 14px;
+    font-weight: 400;
+	transition: all 0.5s ease-in-out;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.registerExpense__donorInfoBtn, .registerExpense__donorBackBtn {
+    width: 150px;
+    height: 25px;
+    cursor: pointer;
+    background: #4F95DA;
+    border: 1px solid #91C9FF;
+    font-weight: 700;
+    outline: none;
+    transition: 1s ease-in-out;
+    position: relative;
+    float: right;
+  }
+  .registerExpense__donorBackBtn{
+      width: 100px;
+      margin-right: 5px;
+  }
+  
+  svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    fill: none;
+    stroke: rgb(0, 0, 0);
+    stroke-dasharray: 150 480;
+    stroke-dashoffset: 150;
+    transition: 1s ease-in-out;
+  }
+  
+  .registerExpense__donorInfoBtn:hover, .registerExpense__donorBackBtn:hover {
+    transition: 1s ease-in-out;
+    background: rgb(221, 146, 7);
+  }
+  
+  .registerExpense__donorInfoBtn:hover svg, .registerExpense__donorBackBtn:hover svg {
+    stroke-dashoffset: -480;
+  }
+  
+  .registerExpense__donorInfoBtn span, .registerExpense__donorBackBtn span {
+    color: white;
+    font-size: 14px;
+    font-weight: 100;
+  }
+
+  .error, .success{
+    color: white;
+    padding: 5px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    width: 45%;
+  }
+  .error{
+    background-color: rgb(255, 97, 97);
+  }
+  .success{
+    background-color: rgb(27, 141, 4);
+  }
+@media all and (max-width: 900px) { 
+    h1{
+        letter-spacing: 0.5rem;
+    }
+}
+@media all and (max-width: 700px) { 
+    h1{
+        letter-spacing: 0rem;
+    }    
+}
+@media all and (max-width: 680px) { 
+    .registerExpense__donorBackBtn{
+        margin-right: 0;
+        margin-top: 5px
+    }
+}

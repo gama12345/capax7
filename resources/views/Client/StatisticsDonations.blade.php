@@ -9,14 +9,41 @@
         <div class="title"><h1>ESTADÍSTICAS</h1></div>
 
         <div class="statisticsDonations__container">
-            <div class="statisticsDonations__typeGraph">
-                <label for="type" >Tipo:</label>
-                <div class="select">
-                    <select id="type" onchange="makeGraph(this.value)">
-                        <option>Últimos años</option>
-                        <option>Últimos meses</option>
-                    </select>
+        
+        <div id="statisticsDonations__fechas">
+                <div class="statisticsDonations__typeGraph">
+                    <label for="years" >Año:</label>
+                    <div class="select">
+                        <select id="years" onchange="setYear()" >
+                            
+                        </select>
+                    </div>
                 </div>
+                <div class="statisticsDonations__typeGraph">
+                    <label for="months" >Mes:</label>
+                    <div class="select">
+                        <select id="months" onchange="setMonth()">
+                            <option value="01">Enero</option>
+                            <option value="02">Febrero</option>
+                            <option value="03">Marzo</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Mayo</option>
+                            <option value="06">Junio</option>
+                            <option value="07">Julio</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                </div>
+                <form method="post" action="{{ route('showDetailedDonationsMonthYear') }}">
+                @csrf
+                    <input id="mes" name="month" hidden/>
+                    <input id="año" name="year" hidden/>
+                    <button class="btn" type="submit">Ver gráfico</button>
+                </form>
             </div>
 
             <div id="parentGraph" class="statisticsDonations__donorsGraph">
@@ -30,21 +57,44 @@
         window.onload = function() {
             document.getElementById('statisticsDonations').className += " slideEffect";
         }
-        var thisYear = @json($thisYearDonations);
-        var lastYear = @json($lastYearDonations);
-        var lastLastYear = @json($lastLastYearDonations);
-        var thisMonth = @json($thisMonthDonations);
-        var lastMonth = @json($lastMonthDonations);
-        var lastLastMonth = @json($lastLastMonthDonations);
+        /*
+        var thisYear = @(thisYearDonations);
+        var lastYear = @(lastYearDonations);
+        var lastLastYear = json(lastLastYearDonations);
+        var thisMonth = json(thisMonthDonations);
+        var lastMonth = json(lastMonthDonations);
+        var lastLastMonth = json(lastLastMonthDonations);
         
         makeGraph('Últimos años');
+        */
 
-        function makeGraph(type){
-            var xAxis = []; var montos = []; var text;
+        var donaciones = @json($donaciones);
+        var añoRegistro = @json($añoRegistro);
+        var añoActual = @json($añoActual);
+        var mesSeleccionado = @json($mesSeleccionado);
+        var añoSeleccionado = @json($añoSeleccionado);
+        while(añoActual >= añoRegistro){
+            document.getElementById('years').innerHTML += "<option>"+añoActual+"</option>";
+            añoActual--;
+        }
+        var montos = [];
+        for(i=0; i<donaciones.length; i++){
+            montos.push(donaciones[i].total);
+        }
+        if(mesSeleccionado != "" && añoSeleccionado != ""){
+            document.getElementById("months").value = mesSeleccionado;
+            document.getElementById("years").value = añoSeleccionado;
+        }
+        document.getElementById("mes").value = document.getElementById("months").value;
+        document.getElementById("año").value = document.getElementById("years").value;
+        makeGraph();
 
+        function makeGraph(){
+            var xAxis = [];  var text;
+/*
             if(type === "Últimos años"){
                 text = "Últimos 3 años";
-                xAxis = @json($years);
+                xAxis = json($years);
                 montos.push(lastLastYear);
                 montos.push(lastYear);
                 montos.push(thisYear);
@@ -53,11 +103,13 @@
                 montos.push(lastLastMonth);
                 montos.push(lastMonth);
                 montos.push(thisMonth);
-                xAxis = setLanguageMonths(@json($months)); 
+                xAxis = setLanguageMonths(json($months)); 
             }else{                
                 text = "Mejores donantes del mes";
                 
             }
+            */
+            xAxis.push(setLanguageMonths(mesSeleccionado)); 
             //Remove old graph, create new one 
             graphic = document.getElementById('graph');
             graphic.parentNode.removeChild(graphic);
@@ -84,7 +136,7 @@
                     title: {
                         fontSize: 15,
                         display: true,
-                        text: text
+                        text: "Donaciones de "+xAxis[0]+" "+añoSeleccionado
                     },
                     tooltips: {
                         callbacks: {
@@ -102,49 +154,55 @@
             });
         }
 
-        function setLanguageMonths(monthsName){
-            var nombres = [];
-            monthsName.forEach(month => {
+        function setMonth(){
+            document.getElementById("mes").value = document.getElementById("months").value;
+        }
+        function setYear(){
+            document.getElementById("año").value = document.getElementById("years").value;
+        }
+        function setLanguageMonths(month){
                 switch(month){
-                    case 1 || "01":
-                        nombres.push("Enero");
+                    case 1: case "01":
+                        return "Enero";
                     break;
-                    case 2 || "02":
-                        nombres.push("Febrero");
+                    case 2: case "02":
+                        return "Febrero";
                     break;
-                    case 3 || "03":
-                        nombres.push("Marzo");
+                    case 3: case "03":
+                        return "Marzo";
                     break;
-                    case 4 || "04":
-                        nombres.push("Abril");
+                    case 4: case "04":
+                        return "Abril";
                     break;
-                    case 5 || "05":
-                        nombres.push("Mayo");
+                    case 5: case "05":
+                        return "Mayo";
                     break;
-                    case 6 || "06":
-                        nombres.push("Junio");
+                    case 6: case "06":
+                        return "Junio";
                     break;
-                    case 7 || "07":
-                        nombres.push("Julio");
+                    case 7: case "07":
+                        return "Julio";
                     break;
                     case 8: case "08":
-                        nombres.push("Agosto");
+                        return "Agosto";
                     break;
                     case 9: case "09":
-                        nombres.push("Septiembre");
+                        return "Septiembre";
                     break;
                     case 10: case "10":
-                        nombres.push("Octubre");
+                        return "Octubre";
                     break;
                     case 11: case "11":
-                        nombres.push("Noviembre");
+                        return "Noviembre";
                     break;
                     case 12: case "12":
-                        nombres.push("Diciembre");
+                        return "Diciembre";
+                    break;
+                    default:
+                        return month;
                     break;
                 }
-            });
-            return nombres;
+                return "";
         }
     </script>
 

@@ -12,7 +12,7 @@
              <nav>
                 <a href="{{ route('home','usuario') }}" title="Mis datos"><img class="menuElement" src="/Icons/home-page.png" alt="No se pudo cargar el icono"></img><p>MIS DATOS</p></a>                          
                 <a href="{{ route('showDonorsMenu') }}" title="Donantes"><img class="menuElement" src="/Icons/donors.png" alt="No se pudo cargar el icono"></img><p>DONANTE</p></a>
-                <a href="{{ route('showStatistics') }}" title="Ver estadisticas"><img class="menuElement" src="/Icons/stadistics.png" alt="No se pudo cargar el icono"></img><p>DATOS</p></a>
+                <a href="{{ route('showDataMenu') }}" title="Ver ingresos y gastos"><img class="menuElement" src="/Icons/stadistics.png" alt="No se pudo cargar el icono"></img><p>FINANZAS</p></a>
                 <a href="{{ route('logout', 'admin') }}" title="Cerrar sesión"><img class="menuElement" src="/Icons/logout.png" alt="No se pudo cargar el icono"></img><p>SALIR</p></a>
                 
             </nav>

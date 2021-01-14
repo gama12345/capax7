@@ -11,10 +11,19 @@ use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
+    //This fix an laravel error with PHP 8
+    public function callAction($method, $parameters)
+    {
+        return parent::callAction($method, array_values($parameters));
+    }
     //Main home
     public function showMain(Request $request){
         $data = DB::table('admins')->where('id',1)->select('pagina_web','facebook','instagram','twitter','logo')->get();
-        return view('main')->with('logo',$data[0]->logo)->with('web',$data[0]->pagina_web)->with('facebook',$data[0]->facebook)->with('instagram',$data[0]->instagram)->with('twitter',$data[0]->twitter);
+        if($data){
+            return view('main')->with('logo',$data[0]->logo)->with('web',$data[0]->pagina_web)->with('facebook',$data[0]->facebook)->with('instagram',$data[0]->instagram)->with('twitter',$data[0]->twitter);
+        }else{
+            return view('main')->with('logo',"logo-transparent-black-Capax7.png")->with('web',"https://www.capax7consultores.com/home/")->with('facebook',"")->with('instagram',"")->with('twitter',"");
+        }
     }
     //Login
     public function login(Request $request)

@@ -22,11 +22,25 @@
                     <input type="text" class="form-field" name="razon_social" value="{{old('razon_social')}}"/>
                 </label>
                 <label>
-                    <span tyle="max-width: 30%">RFC <span class="required">*</span></span>
-                    <input type="text" class="form-field" name="rfc"  style="max-width: 30%" value="{{old('rfc')}}"/>
+                    <span style="max-width: 30%;" >RFC <span class="required">*</span></span>
+                    <input type="text" class="form-field" name="rfc"  style="max-width: 30%; text-transform:uppercase" value="{{old('rfc')}}"/>
                     
                     <span class="doc_pdf" >RFC<span class="required">*</span></span>
                     <input type="file" name="doc_rfc" accept="application/pdf" style="max-width: 30%"/>
+                </label>
+                <label>
+                    <span style="max-width: 30%" title="Representante legal">Representante Legal <span class="required">*</span></span>
+                    <input type="text" class="form-field" name="r_legal"  style="max-width: 30%;" value="{{old('r_legal')}}"/>
+                    
+                    <span class="doc_pdf" >Identificación oficial </span>
+                    <input type="file" name="doc_r_legal" accept="application/pdf" style="max-width: 28%; margin-left: 1%">
+                </label>
+                <label>
+                    <span style="max-width: 30%" title="Estado">Estado <span class="required">*</span></span>
+                    <input type="text" class="form-field" name="estado"  style="max-width: 30%;" value="{{old('estado')}}"/>
+                    
+                    <span style="max-width: 30%; text-align: center" title="Ciudad">Ciudad <span class="required">*</span></span>
+                    <input type="text" class="form-field" name="ciudad"  style="max-width: 30%;" value="{{old('ciudad')}}"/>
                 </label>
             </fieldset>
             
@@ -72,34 +86,34 @@
                 </label>
 
                 <label>
-                    <span tyle="max-width: 30%" title="Representante legal">R. Legal <span class="required">*</span></span>
-                    <input type="text" class="form-field" name="r_legal"  style="max-width: 30%" value="{{old('r_legal')}}"/>
+                    <span tyle="max-width: 30%" title="Nombre del banco">Banco <span class="required">*</span></span>
+                    <input type="text" class="form-field" name="banco"  style="max-width: 30%" value="{{old('banco')}}"/>
                     
-                    <span class="doc_pdf" >R. Legal <span class="required">*</span></span>
-                    <input type="file" name="doc_r_legal" accept="application/pdf" style="max-width: 30%">
+                    <span style="max-width: 30%; text-align: center" title="Num. de cuenta bancaria">Cuenta <span class="required">*</span><br>bancaria</span>
+                    <input type="text" class="form-field" name="cta_bancaria"  style="max-width: 30%" value="{{old('cta_bancaria')}}"/>
                 </label>
 
                 <label>
-                    <span tyle="max-width: 30%" title="Num. de cuenta bancaria">Cta. bancaria <span class="required">*</span></span>
-                    <input type="text" class="form-field" name="cta_bancaria"  style="max-width: 30%" value="{{old('cta_bancaria')}}"/>
+                    <span tyle="max-width: 30%" title="Clave bancaria">Clave interbancaria <span class="required">*</span></span>
+                    <input type="text" class="form-field" name="clave_interbancaria"  style="max-width: 30%" value="{{old('clave_interbancaria')}}"/>
                     
-                    <span class="doc_pdf" >Cta. <span class="required">*</span></span>
+                    <span class="doc_pdf" >Cuenta </span>
                     <input type="file" name="doc_cta_bancaria" accept="application/pdf" style="max-width: 30%">
                 </label>
 
                 <label>
-                    <span tyle="max-width: 30%" title="Num. de seguro">IMSS <span class="required">*</span></span>
+                    <span tyle="max-width: 30%" title="Num. de seguro">IMSS </span>
                     <input type="text" class="form-field" name="imss"  style="max-width: 30%" value="{{old('imss')}}"/>
                     
-                    <span class="doc_pdf" >IMSS <span class="required">*</span></span>
+                    <span class="doc_pdf" >IMSS </span>
                     <input type="file" name="doc_imss" accept="application/pdf" style="max-width: 30%">
                 </label>
 
                 <label>
-                    <span tyle="max-width: 30%" title="Agente Capacitador Externo">ACE <span class="required">*</span></span>
+                    <span tyle="max-width: 30%" title="Agente Capacitador Externo">Agente Capacitador Externo </span>
                     <input type="text" class="form-field" name="ace_stps"  style="max-width: 30%" value="{{old('ace_stps')}}"/>
                     
-                    <span class="doc_pdf" >ACE <span class="required">*</span></span>
+                    <span class="doc_pdf" >Agente Capacitador Externo </span>
                     <input type="file" name="doc_ace_stps" accept="application/pdf" style="max-width: 30%">
                 </label>
             </fieldset>
@@ -109,11 +123,11 @@
                 <legend>Persona moral lucrativa</legend>
                 <!--Moral con fin de lucro-->
                 <label>
-                    <span tyle="max-width: 30%" title="Acta constitutiva">Acta <span class="required">*</span></span>
+                    <span tyle="max-width: 30%" title="Acta constitutiva">Acta constitutiva<span class="required">*</span></span>
                     <input type="file" name="doc_acta_constitutiva_lucrativa" accept="application/pdf" style="width: 80%; max-width: 30%">
                     
-                    <span class="doc_pdf" title="Folio Registral Electrónico">Folio <span class="required">*</span></span>
-                    <input type="file" name="doc_folio_reg_electronico_lucrativa" accept="application/pdf" style="max-width: 30%">
+                    <span class="doc_pdf" title="Folio Registral Electrónico">Folio registral electrónico<span class="required">*</span></span>
+                    <input type="file" name="doc_folio_reg_electronico_lucrativa" accept="application/pdf" style="max-width: 28%; margin-left: 1%">
                 </label>
             </fieldset>
 
@@ -121,24 +135,24 @@
                 <legend>Persona moral no lucrativa</legend>
                 <!--Moral sin fin de lucro-->
                 <label>
-                    <span tyle="max-width: 30%" title="Acta constitutiva">Acta <span class="required">*</span></span>
+                    <span tyle="max-width: 30%" title="Acta constitutiva">Acta constitutiva<span class="required">*</span></span>
                     <input type="file" name="doc_acta_constitutiva_no_lucrativa" accept="application/pdf" style="width: 80%; max-width: 30%">
                     
-                    <span class="doc_pdf" title="Folio Registral Electrónico">Folio <span class="required">*</span></span>
-                    <input type="file" name="doc_folio_reg_electronico_no_lucrativa" accept="application/pdf" style="max-width: 30%">
+                    <span class="doc_pdf" title="Folio Registral Electrónico">Folio registral electrónico </span>
+                    <input type="file" name="doc_folio_reg_electronico_no_lucrativa" accept="application/pdf" style="max-width: 28%; margin-left: 1%">
                 </label>
                 <label>
-                    <span tyle="max-width: 30%" title="Autorización Donataria Fiscal">ADF <span class="required">*</span></span>
+                    <span tyle="max-width: 30%" title="Autorización Donataria Fiscal">Autorización donataria fiscal <span class="required">*</span></span>
                     <input type="file" name="doc_autorizacion_fiscal" accept="application/pdf" style="width: 80%; max-width: 30%">
                     
-                    <span class="doc_pdf" title="Registro de marca">Marca<span class="required">*</span></span>
+                    <span class="doc_pdf" title="Registro de marca">Registro de marca </span>
                     <input type="file" name="doc_reg_marca" accept="application/pdf" style="max-width: 30%">
                 </label>
                 <label>
-                    <span tyle="max-width: 30%" title="Clave Única de Inscripción al Registro de OSC">Cluni <span class="required">*</span></span>
+                    <span tyle="max-width: 30%" title="Clave Única de Inscripción al Registro de OSC">CLUNI </span>
                     <input type="file" name="doc_cluni" accept="application/pdf" style="width: 80%; max-width: 30%">
                     
-                    <span class="doc_pdf" title="Multilaterales">Multi<span class="required">*</span></span>
+                    <span class="doc_pdf" title="Multilaterales">Multilaterales ></span>
                     <input type="file" name="doc_multilaterales" accept="application/pdf" style="max-width: 30%">
                 </label>
             </fieldset>

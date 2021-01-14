@@ -131,29 +131,29 @@
                 <div class="home__docSectionRow" >
                     <div class="home__docContainer">
                         <input type="image" id="rfc" class="home__docImg" src="/Images/rfc-logo.png" data-toggle="tooltip" title="RFC"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $rfc->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $rfc->nombre ?? 'doc-no-found.pdf'}}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('rfc')">Cambiar</button>
                     </div>
                     <div class="home__docContainer">
                         <input type="image" id="r_legal" class="home__docImg" src="/Images/r-legal-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Representante legal"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $r_legal->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $r_legal->nombre ?? 'doc-no-found.pdf'}}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('r_legal')">Cambiar</button>                    
                     </div>
                     <div class="home__docContainer">
                         <input type="image" id="cta_bancaria" class="home__docImg" src="/Images/cta-bancaria-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Cuenta bancaria"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $cta_bancaria->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $cta_bancaria->nombre ?? 'doc-no-found.pdf'}}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('cta_bancaria')">Cambiar</button>                    
                     </div>
                 </div>
                 <div class="home__docSectionRow" >
                     <div class="home__docContainer">
                         <input type="image" id="imss" class="home__docImg" src="/Images/imss-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="N° Seguro (IMSS)"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $imss->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $imss->nombre ?? 'doc-no-found.pdf'}}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('imss')">Cambiar</button>                    
                     </div>
                     <div class="home__docContainer">
                         <input type="image" id="ace_stps" class="home__docImg" src="/Images/ace-stps-logo.png" onclick="showModal(this.id)" data-toggle="tooltip" title="Agente Capacitador Externo"/>
-                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $ace_stps->nombre }}')">Ver</button>
+                        <button class="home__btnShow" onclick="window.open('/storage/clients/{{ $datos->razon_social }}/{{ $ace_stps->nombre ?? 'doc-no-found.pdf'}}')">Ver</button>
                         <button class="home__btnChange" onclick="showModal('ace_stps')">Cambiar</button>                    
                     </div>
                 </div>

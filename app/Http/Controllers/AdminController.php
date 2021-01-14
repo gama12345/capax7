@@ -14,6 +14,11 @@ use Illuminate\Support\Carbon;
 class AdminController extends Controller
 {
 
+    //This fix an laravel error with PHP 8
+    public function callAction($method, $parameters)
+    {
+        return parent::callAction($method, array_values($parameters));
+    }
     //NavBar menu views
     public function showRegisterClient(){
         if(auth('admin')->check()){
@@ -156,17 +161,17 @@ class AdminController extends Controller
         //Validation
         $validation = $request->validate([
             'presidente' => ['required', 'regex:/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/'],
-            'director_ejecutivo' => ['required', 'regex:/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/'],
+            //'director_ejecutivo' => ['required', 'regex:/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/'],
 
         ],
         [
             'presidente.required' => 'Debe ingresar el nombre del Presidente',
             'presidente.regex' => 'Formato de nombre del Presidente incorrecto/desconocido',
-            'director_ejecutivo.required' => 'Debe ingresar el nombre del Director ejecutivo',
-            'director_ejecutivo.regex' => 'Formato de nombre del Director ejecutivo incorrecto/desconocido',
+            /*'director_ejecutivo.required' => 'Debe ingresar el nombre del Director ejecutivo',
+            'director_ejecutivo.regex' => 'Formato de nombre del Director ejecutivo incorrecto/desconocido',*/
         ]);
         $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['presidente'=>($request->presidente)]);
-        $updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['director_ejecutivo'=>($request->director_ejecutivo)]);
+        //$updating = DB::table('admins')->where('id', auth('admin')->user()->id)->update(['director_ejecutivo'=>($request->director_ejecutivo)]);
 
         try {
             \Mail::to(auth('admin')->user()->email)->send(new \App\Mail\InformationChangesMade());
@@ -181,7 +186,9 @@ class AdminController extends Controller
         $validation = $request->validate([
             'razon_social' => ['required','unique:clients', 'max:200'],
             'rfc' => ['required','unique:clients', 'regex:/^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([A-Z]|[0-9]){2}([A]|[0-9]){1})?$/'],
-            'doc_rfc' => ['required', 'mimetypes:application/pdf', 'max:2048'],
+            'doc_rfc' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+            'estado' => ['required', 'max:100'],
+            'ciudad' => ['required', 'max:100'],
             'email' => ['required','email','unique:clients'],
             'telefono' => ['required','regex:/^[0-9]{10}/'],
             'celular' => ['nullable','regex:/^[0-9]{10}/'],
@@ -190,18 +197,24 @@ class AdminController extends Controller
             'twitter' => ['nullable', 'regex:/^[A-Za-z0-9-_\.]{3,20}/'],
             'instagram' => ['nullable', 'regex:/^[A-Za-z0-9-_\.]{3,20}/'],
             'r_legal' => ['required', 'regex:/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/'],
-            'doc_r_legal' => ['required', 'mimetypes:application/pdf', 'max:2048'],
+            'doc_r_legal' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+            'banco' => ['required', 'max:100'],
             'cta_bancaria' => ['required','regex:/^[0-9]{5,30}/'],
-            'doc_cta_bancaria' => ['required', 'mimetypes:application/pdf', 'max:2048'],
-            'imss' => ['required', 'regex:/^[\d]{11}$/'],
-            'doc_imss' => ['required', 'mimetypes:application/pdf', 'max:2048'],
-            'ace_stps' => ['required', 'regex:/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/'],
-            'doc_ace_stps' => ['required', 'mimetypes:application/pdf', 'max:2048'],
+            'clave_interbancaria' => ['required', 'max:18'],
+            'doc_cta_bancaria' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+            'imss' => ['nullable', 'regex:/^[\d]{11}$/'],
+            'doc_imss' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+            'ace_stps' => ['nullable', 'regex:/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/'],
+            'doc_ace_stps' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
         ],
         [
             'razon_social.required' => 'Especifique la razón social o nombre',
             'razon_social.unique' => 'Esta razón social ya se encuentra registrada',
             'razon_social.max' => "Campo 'Razón social' no puede superar los 200 caracteres",
+            'estado.required' => 'Especifique la entidad federativa (estado) del cliente',
+            'estado.max' => "Campo 'Estado' no puede superar los 100 caracteres",
+            'ciudad.required' => 'Especifique la ciudad del cliente',
+            'ciudad.max' => "Campo 'Ciudad' no puede superar los 100 caracteres",
             'rfc.required' => 'Especifique el RFC',
             'rfc.unique' => 'Este RFC ya se encuentra registrado',
             'rfc.regex' => 'Formato de RFC no reconocido, intente de nuevo',
@@ -223,11 +236,15 @@ class AdminController extends Controller
             'doc_r_legal.required' => 'Seleccione archivo R. Legal (PDF)',
             'doc_r_legal.mimetypes' => 'Archivo R. Legal debe ser tipo PDF',
             'doc_r_legal.max' => 'Archivo R. Legal no debe superar los 2MB',
+            'banco.required' => 'Especifique el nombre del banco',
+            'banco.max' => "Campo 'Banco' no puede superar los 100 caracteres",
             'cta_bancaria.required' => 'Debe ingresar el número de cuenta bancaria',
             'cta_bancaria.regex' => 'Formato de cuenta bancaria incorrecto/desconocido (sólo digitos sin espacios)',
             'doc_cta_bancaria.required' => 'Seleccione archivo Cta. bancaria (PDF)',
             'doc_cta_bancaria.mimetypes' => 'Archivo Cta. bancaria debe ser tipo PDF',
             'doc_cta_bancaria.max' => 'Archivo Cta. bancaria no debe superar los 2MB',
+            'clave_interbancaria.required' => 'Especifique la clave interbancaria del cliente',
+            'clave_interbancaria.max' => "Campo 'Clave interbancaria' no puede superar los 18 caracteres",
             'imss.required' => 'Debe ingresar el número de seguro social (IMSS)',
             'imss.regex' => 'Formato de seguro social (IMSS) incorrecto/desconocido (11 digitos)',
             'doc_imss.required' => 'Seleccione archivo IMSS (PDF)',
@@ -244,7 +261,7 @@ class AdminController extends Controller
         if(($request->tipo_persona === "Moral")&&($request->tipo_org === "Si")){    
             $validation = $request->validate([
                 'doc_acta_constitutiva_lucrativa' => ['required', 'mimetypes:application/pdf', 'max:2048'],
-                'doc_folio_reg_electronico_lucrativa' => ['required', 'mimetypes:application/pdf', 'max:2048']
+                'doc_folio_reg_electronico_lucrativa' => ['nullable', 'mimetypes:application/pdf', 'max:2048']
             ],
             [
                 'doc_acta_constitutiva_lucrativa.required' => 'Seleccione archivo Acta (PDF)',
@@ -256,12 +273,12 @@ class AdminController extends Controller
             ]);
         }else if(($request->tipo_persona === "Moral")&&($request->tipo_org === "No")){ //No Lucrativa
             $validation = $request->validate([
-                'doc_acta_constitutiva_no_lucrativa' => ['required', 'mimetypes:application/pdf', 'max:2048'],
-                'doc_folio_reg_electronico_no_lucrativa' => ['required', 'mimetypes:application/pdf', 'max:2048'],
-                'doc_autorizacion_fiscal' => ['required', 'mimetypes:application/pdf', 'max:2048'],
-                'doc_reg_marca' => ['required', 'mimetypes:application/pdf', 'max:2048'],
-                'doc_cluni' => ['required', 'mimetypes:application/pdf', 'max:2048'],
-                'doc_multilaterales' => ['required', 'mimetypes:application/pdf', 'max:2048'],
+                'doc_acta_constitutiva_no_lucrativa' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+                'doc_folio_reg_electronico_no_lucrativa' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+                'doc_autorizacion_fiscal' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+                'doc_reg_marca' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+                'doc_cluni' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
+                'doc_multilaterales' => ['nullable', 'mimetypes:application/pdf', 'max:2048'],
             ],
             [
                 'doc_acta_constitutiva_no_lucrativa.required' => 'Seleccione archivo Acta (PDF)',
@@ -294,61 +311,80 @@ class AdminController extends Controller
         //In Folder
         Storage::disk('local')->makeDirectory('public/clients/'.$request->razon_social);
         
-        Storage::copy('public/clients/doc-no-found.pdf','public/clients/'.$request->razon_social.'/doc-no-found.pdf');
 
-        $rfc = $request->doc_rfc->getClientOriginalName();
-        $request->file('doc_rfc')->storeAs('public/clients/'.$request->razon_social,$rfc);
+        if($request->doc_rfc){
+            $rfc = $request->doc_rfc->getClientOriginalName();
+            $request->file('doc_rfc')->storeAs('public/clients/'.$request->razon_social,$rfc);
+        }
         
-        $r_legal = $request->doc_r_legal->getClientOriginalName();
-        $request->file('doc_r_legal')->storeAs('public/clients/'.$request->razon_social,$r_legal);
-
-        $cta_bancaria = $request->doc_cta_bancaria->getClientOriginalName();
-        $request->file('doc_cta_bancaria')->storeAs('public/clients/'.$request->razon_social,$cta_bancaria);
-        
-        $imss = $request->doc_imss->getClientOriginalName();
-        $request->file('doc_imss')->storeAs('public/clients/'.$request->razon_social,$imss);
-        
-        $ace_stps = $request->doc_ace_stps->getClientOriginalName();
-        $request->file('doc_ace_stps')->storeAs('public/clients/'.$request->razon_social,$ace_stps);
-
+        if($request->doc_r_legal){
+            $r_legal = $request->doc_r_legal->getClientOriginalName();
+            $request->file('doc_r_legal')->storeAs('public/clients/'.$request->razon_social,$r_legal);
+        }
+        if($request->doc_cta_bancaria){
+            $cta_bancaria = $request->doc_cta_bancaria->getClientOriginalName();
+            $request->file('doc_cta_bancaria')->storeAs('public/clients/'.$request->razon_social,$cta_bancaria);
+        }
+        if($request->doc_imss){
+            $imss = $request->doc_imss->getClientOriginalName();
+            $request->file('doc_imss')->storeAs('public/clients/'.$request->razon_social,$imss);
+        }
+        if($request->doc_ace_stps){
+            $ace_stps = $request->doc_ace_stps->getClientOriginalName();
+            $request->file('doc_ace_stps')->storeAs('public/clients/'.$request->razon_social,$ace_stps);
+        }
         
         //Persona Moral Lucrativa
         if(($request->tipo_persona === "Moral")&&($request->tipo_org === "Si")){ 
-            $acta_constitutiva_lucrativa = $request->doc_acta_constitutiva_lucrativa->getClientOriginalName();
-            $request->file('doc_acta_constitutiva_lucrativa')->storeAs('public/clients/'.$request->razon_social,$acta_constitutiva_lucrativa);
-            
-            $folio_reg_electronico_lucrativa = $request->doc_folio_reg_electronico_lucrativa->getClientOriginalName();
-            $request->file('doc_folio_reg_electronico_lucrativa')->storeAs('public/clients/'.$request->razon_social,$folio_reg_electronico_lucrativa);
-
+            if($request->doc_acta_constitutiva_lucrativa){
+                $acta_constitutiva_lucrativa = $request->doc_acta_constitutiva_lucrativa->getClientOriginalName();
+                $request->file('doc_acta_constitutiva_lucrativa')->storeAs('public/clients/'.$request->razon_social,$acta_constitutiva_lucrativa);
+            }
+            if($request->doc_folio_reg_electronico_lucrativa){
+                $folio_reg_electronico_lucrativa = $request->doc_folio_reg_electronico_lucrativa->getClientOriginalName();
+                $request->file('doc_folio_reg_electronico_lucrativa')->storeAs('public/clients/'.$request->razon_social,$folio_reg_electronico_lucrativa);
+            }
         }else if(($request->tipo_persona === "Moral")&&($request->tipo_org === "No")){ //No Lucrativa
-            $acta_constitutiva_no_lucrativa = $request->doc_acta_constitutiva_no_lucrativa->getClientOriginalName();
-            $request->file('doc_acta_constitutiva_no_lucrativa')->storeAs('public/clients/'.$request->razon_social,$acta_constitutiva_no_lucrativa);
-            
-            $folio_reg_electronico_no_lucrativa = $request->doc_folio_reg_electronico_no_lucrativa->getClientOriginalName();
-            $request->file('doc_folio_reg_electronico_no_lucrativa')->storeAs('public/clients/'.$request->razon_social,$folio_reg_electronico_no_lucrativa);
-            
-            $autorizacion_fiscal = $request->doc_autorizacion_fiscal->getClientOriginalName();
-            $request->file('doc_autorizacion_fiscal')->storeAs('public/clients/'.$request->razon_social,$autorizacion_fiscal);
-            
-            $reg_marca = $request->doc_reg_marca->getClientOriginalName();
-            $request->file('doc_reg_marca')->storeAs('public/clients/'.$request->razon_social,$reg_marca);
-            
-            $cluni = $request->doc_cluni->getClientOriginalName();
-            $request->file('doc_cluni')->storeAs('public/clients/'.$request->razon_social,$cluni);
-            
-            $multilaterales = $request->doc_multilaterales->getClientOriginalName();
-            $request->file('doc_multilaterales')->storeAs('public/clients/'.$request->razon_social,$multilaterales);
+            if($request->doc_acta_constitutiva_no_lucrativa){
+                $acta_constitutiva_no_lucrativa = $request->doc_acta_constitutiva_no_lucrativa->getClientOriginalName();
+                $request->file('doc_acta_constitutiva_no_lucrativa')->storeAs('public/clients/'.$request->razon_social,$acta_constitutiva_no_lucrativa);
+            }
+            if($request->doc_folio_reg_electronico_no_lucrativa){
+                $folio_reg_electronico_no_lucrativa = $request->doc_folio_reg_electronico_no_lucrativa->getClientOriginalName();
+                $request->file('doc_folio_reg_electronico_no_lucrativa')->storeAs('public/clients/'.$request->razon_social,$folio_reg_electronico_no_lucrativa);
+            }
+            if($request->doc_autorizacion_fiscal){
+                $autorizacion_fiscal = $request->doc_autorizacion_fiscal->getClientOriginalName();
+                $request->file('doc_autorizacion_fiscal')->storeAs('public/clients/'.$request->razon_social,$autorizacion_fiscal);
+            }
+            if($request->doc_reg_marca){
+                $reg_marca = $request->doc_reg_marca->getClientOriginalName();
+                $request->file('doc_reg_marca')->storeAs('public/clients/'.$request->razon_social,$reg_marca);
+            }
+            if($request->doc_cluni){
+                $cluni = $request->doc_cluni->getClientOriginalName();
+                $request->file('doc_cluni')->storeAs('public/clients/'.$request->razon_social,$cluni);
+            }
+            if($request->doc_multilaterales){
+                $multilaterales = $request->doc_multilaterales->getClientOriginalName();
+                $request->file('doc_multilaterales')->storeAs('public/clients/'.$request->razon_social,$multilaterales);
+            }
         }
+        Storage::copy('public/clients/doc-no-found.pdf','public/clients/'.$request->razon_social.'/doc-no-found.pdf');
 
         //Saving data
         $lucrative = $request->tipo_org;
         if($request->tipo_persona === "Fisica"){
             $lucrative = null;
         }
+        $currentDate = Carbon::now();
+        $year = $currentDate->format('Y');
         $newClient = new Client([
             'razon_social' => $request->razon_social,
             'tipo_persona' => $request->tipo_persona,
             'rfc' => $request->rfc,
+            'ciudad' => $request->ciudad,
+            'estado' => $request->estado,
             'email' => $request->email,
             'contraseña' => bcrypt('capax7'),
             'telefono' => $request->telefono,
@@ -359,9 +395,12 @@ class AdminController extends Controller
             'instagram' => $request->instagram,
             'es_lucrativa' => $lucrative,
             'r_legal' => $request->r_legal,
+            'banco' => $request->banco,
             'cta_bancaria' => $request->cta_bancaria,
+            'clave_interbancaria' => $request->clave_interbancaria,
             'imss' => $request->imss,
             'ace_stps' => $request->ace_stps,
+            'registrado_en' => $year
         ]);
         $newClient->save();
 
@@ -370,88 +409,117 @@ class AdminController extends Controller
 
         //Saving docs 
         //In DB
-        $newDoc = new Document([
-            'tipo' => 'rfc',
-            'nombre' => $rfc,
-            'cliente' => $client->id
-        ]);
-        $newDoc->save();
-        $newDoc = new Document([
-            'tipo' => 'r_legal',
-            'nombre' => $request->doc_r_legal->getClientOriginalName(),
-            'cliente' => $client->id
-        ]);
-        $newDoc->save();
-        $newDoc = new Document([
-            'tipo' => 'cta_bancaria',
-            'nombre' => $request->doc_cta_bancaria->getClientOriginalName(),
-            'cliente' => $client->id
-        ]);
-        $newDoc->save();
-        $newDoc = new Document([
-            'tipo' => 'imss',
-            'nombre' => $request->doc_imss->getClientOriginalName(),
-            'cliente' => $client->id
-        ]);
-        $newDoc->save();
-        $newDoc = new Document([
-            'tipo' => 'ace_stps',
-            'nombre' => $request->doc_ace_stps->getClientOriginalName(),
-            'cliente' => $client->id
-        ]);
-        $newDoc->save();
+        if($request->doc_rfc){
+            $newDoc = new Document([
+                'tipo' => 'rfc',
+                'nombre' => $rfc,
+                'cliente' => $client->id
+            ]);
+            $newDoc->save();
+        }
+
+        if($request->doc_r_legal){
+            $newDoc = new Document([
+                'tipo' => 'r_legal',
+                'nombre' => $request->doc_r_legal->getClientOriginalName(),
+                'cliente' => $client->id
+            ]);
+            $newDoc->save();
+        }
+        if($request->doc_cta_bancaria){
+            $newDoc = new Document([
+                'tipo' => 'cta_bancaria',
+                'nombre' => $request->doc_cta_bancaria->getClientOriginalName(),
+                'cliente' => $client->id
+            ]);
+            $newDoc->save();
+        }
+        if($request->doc_imss){
+            $newDoc = new Document([
+                'tipo' => 'imss',
+                'nombre' => $request->doc_imss->getClientOriginalName(),
+                'cliente' => $client->id
+            ]);
+            $newDoc->save();
+        }
+        if($request->doc_ace_stps){
+            $newDoc = new Document([
+                'tipo' => 'ace_stps',
+                'nombre' => $request->doc_ace_stps->getClientOriginalName(),
+                'cliente' => $client->id
+            ]);
+            $newDoc->save();
+        }
         
         //Persona Moral Lucrativa
         if(($request->tipo_persona === "Moral")&&($request->tipo_org === "Si")){ 
-            $newDoc = new Document([
-                'tipo' => 'acta_constitutiva',
-                'nombre' => $request->doc_acta_constitutiva_lucrativa->getClientOriginalName(),
-                'cliente' => $client->id
-            ]);
-            $newDoc->save();
-            $newDoc = new Document([
-                'tipo' => 'folio_reg_electronico',
-                'nombre' => $request->doc_folio_reg_electronico_lucrativa->getClientOriginalName(),
-                'cliente' => $client->id
-            ]);
-            $newDoc->save();
+            
+            if($request->doc_acta_constitutiva_lucrativa){
+                $newDoc = new Document([
+                    'tipo' => 'acta_constitutiva',
+                    'nombre' => $request->doc_acta_constitutiva_lucrativa->getClientOriginalName(),
+                    'cliente' => $client->id
+                ]);
+                $newDoc->save();
+            }
+            if($request->doc_folio_reg_electronico_lucrativa){
+                $newDoc = new Document([
+                    'tipo' => 'folio_reg_electronico',
+                    'nombre' => $request->doc_folio_reg_electronico_lucrativa->getClientOriginalName(),
+                    'cliente' => $client->id
+                ]);
+                $newDoc->save();
+            }
         }else if(($request->tipo_persona === "Moral")&&($request->tipo_org === "No")){ //No Lucrativa
-            $newDoc = new Document([
-                'tipo' => 'acta_constitutiva',
-                'nombre' => $request->doc_acta_constitutiva_no_lucrativa->getClientOriginalName(),
-                'cliente' => $client->id
-            ]);
-            $newDoc->save();
-            $newDoc = new Document([
-                'tipo' => 'folio_reg_electronico',
-                'nombre' => $request->doc_folio_reg_electronico_no_lucrativa->getClientOriginalName(),
-                'cliente' => $client->id
-            ]);
-            $newDoc->save();
-            $newDoc = new Document([
-                'tipo' => 'autorizacion_fiscal',
-                'nombre' => $request->doc_autorizacion_fiscal->getClientOriginalName(),
-                'cliente' => $client->id
-            ]);
-            $newDoc->save();
-            $newDoc = new Document([
-                'tipo' => 'reg_marca',
-                'nombre' => $request->doc_reg_marca->getClientOriginalName(),
-                'cliente' => $client->id
-            ]);
-            $newDoc->save();
-            $newDoc = new Document([
-                'tipo' => 'cluni',
-                'nombre' => $request->doc_cluni->getClientOriginalName(),
-                'cliente' => $client->id
-            ]);
-            $newDoc->save();
-            $newDoc = new Document([
-                'tipo' => 'multilaterales',
-                'nombre' => $request->doc_multilaterales->getClientOriginalName(),
-                'cliente' => $client->id
-            ]);
-            $newDoc->save();
+         
+            if($request->doc_acta_constitutiva_no_lucrativa){
+                $newDoc = new Document([
+                    'tipo' => 'acta_constitutiva',
+                    'nombre' => $request->doc_acta_constitutiva_no_lucrativa->getClientOriginalName(),
+                    'cliente' => $client->id
+                ]);
+                $newDoc->save();
+            }
+            if($request->doc_folio_reg_electronico_no_lucrativa){
+                $newDoc = new Document([
+                    'tipo' => 'folio_reg_electronico',
+                    'nombre' => $request->doc_folio_reg_electronico_no_lucrativa->getClientOriginalName(),
+                    'cliente' => $client->id
+                ]);
+                $newDoc->save();
+            }
+            if($request->doc_autorizacion_fiscal){
+                $newDoc = new Document([
+                    'tipo' => 'autorizacion_fiscal',
+                    'nombre' => $request->doc_autorizacion_fiscal->getClientOriginalName(),
+                    'cliente' => $client->id
+                ]);
+                $newDoc->save();
+            }
+            if($request->doc_reg_marca){
+                $newDoc = new Document([
+                    'tipo' => 'reg_marca',
+                    'nombre' => $request->doc_reg_marca->getClientOriginalName(),
+                    'cliente' => $client->id
+                ]);
+                $newDoc->save();
+            }
+            if($request->doc_cluni){
+                $newDoc = new Document([
+                    'tipo' => 'cluni',
+                    'nombre' => $request->doc_cluni->getClientOriginalName(),
+                    'cliente' => $client->id
+                ]);
+                $newDoc->save();
+            }
+            if($request->doc_multilaterales){
+                $newDoc = new Document([
+                    'tipo' => 'multilaterales',
+                    'nombre' => $request->doc_multilaterales->getClientOriginalName(),
+                    'cliente' => $client->id
+                ]);
+                $newDoc->save();
+            }
         }
         
         //Returning to showRegisterClient

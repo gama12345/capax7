@@ -58,10 +58,27 @@
                         </div>
 
                         <div class="registerDonor__inputData">
+                                <input name="calle" type="text" value="{{ old('calle') }}" placeholder="Calle..."/>
+                                <label title="Calle del domicilio">Calle *</label>
+                        </div>
+                        <div class="registerDonor__inputData">
+                                <input name="num_calle" type="text" value="{{ old('num_calle') }}" placeholder="Número de Calle..."/>
+                                <label title="Número de la calle del domicilio">Número de calle *</label>
+                        </div>
+                        <div class="registerDonor__inputData">
+                                <input name="colonia" type="text" value="{{ old('colonia') }}" placeholder="Colonia..."/>
+                                <label title="Colonia del domicilio">Colonia *</label>
+                        </div>
+                        <div class="registerDonor__inputData">
+                                <input name="codigo_postal" type="text" value="{{ old('codigo_postal') }}" placeholder="Código postal..."/>
+                                <label title="Código postal del domicilio">Código postal *</label>
+                        </div>
+<!--
+                        <div class="registerDonor__inputData">
                                 <input name="domicilio" type="text" value="{{ old('domicilio') }}" placeholder="Calle ... #... Colonia ... C.P. ..."/>
                                 <label title="Calle, número, colonia y código postal">Domicilio *</label>
                         </div>
-
+-->
                         <div class="registerDonor__dataMsg">
                             * Información requerida
                         </div>
